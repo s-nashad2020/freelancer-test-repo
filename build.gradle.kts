@@ -1,45 +1,45 @@
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+
 plugins {
-    kotlin("jvm") version "2.2.0-RC"
-    kotlin("plugin.spring") version "2.2.0-RC"
-    id("org.springframework.boot") version "3.5.0"
-    id("io.spring.dependency-management") version "1.1.7"
+    kotlin("jvm") version "2.2.0-RC" apply false
+    kotlin("plugin.spring") version "2.2.0-RC" apply false
+    id("org.springframework.boot") version "3.5.0" apply false
+    id("io.spring.dependency-management") version "1.1.7" apply false
 }
 
-group = "com.respiroc"
-version = "0.0.1-SNAPSHOT"
+allprojects {
+    group = "com.respiroc"
+    version = "0.0.1-SNAPSHOT"
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+    repositories {
+        mavenCentral()
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.flywaydb:flyway-core")
-    implementation("org.flywaydb:flyway-database-postgresql")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("org.postgresql:postgresql")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
+subprojects {
+    apply {
+        plugin("org.jetbrains.kotlin.jvm")
+        plugin("org.jetbrains.kotlin.plugin.spring")
+        plugin("io.spring.dependency-management")
+        plugin("java")
     }
-}
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+    tasks.withType<KotlinJvmCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_24)
+            freeCompilerArgs.add("-Xjsr305=strict")
+        }
+    }
+
+
+    dependencies {
+        "implementation"("org.jetbrains.kotlin:kotlin-reflect")
+        "implementation"("com.fasterxml.jackson.module:jackson-module-kotlin")
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
