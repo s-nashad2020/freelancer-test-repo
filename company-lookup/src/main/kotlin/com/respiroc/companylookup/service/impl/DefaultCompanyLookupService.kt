@@ -3,7 +3,7 @@ package com.respiroc.companylookup.service.impl
 import com.respiroc.companylookup.model.*
 import com.respiroc.companylookup.service.CompanyLookupService
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestTemplate
+import org.springframework.web.client.RestClient
 import org.slf4j.LoggerFactory
 
 /**
@@ -12,16 +12,16 @@ import org.slf4j.LoggerFactory
  */
 @Service
 class DefaultCompanyLookupService : CompanyLookupService {
-    
+
     private val logger = LoggerFactory.getLogger(DefaultCompanyLookupService::class.java)
-    private val restTemplate = RestTemplate()
-    
+    private val restClient = RestClient.create()
+
     override fun search(query: String, countryCode: String): CompanySearchResult {
         logger.info("Searching for companies with query: $query in country: $countryCode")
-        
+
         // This is a stub implementation
         // In a real implementation, this would call a national registry API
-        
+
         // Mock data for demonstration
         val companies = listOf(
             CompanyBasicInfo(
@@ -37,20 +37,20 @@ class DefaultCompanyLookupService : CompanyLookupService {
                 address = "456 Sample Avenue, Sample Town"
             )
         )
-        
+
         return CompanySearchResult(
             companies = companies,
             totalResults = companies.size,
             countryCode = countryCode
         )
     }
-    
+
     override fun getInfo(companyId: String, countryCode: String): CompanyInfo {
         logger.info("Getting info for company ID: $companyId in country: $countryCode")
-        
+
         // This is a stub implementation
         // In a real implementation, this would call a national registry API
-        
+
         // Mock data for demonstration
         return CompanyInfo(
             id = companyId,
