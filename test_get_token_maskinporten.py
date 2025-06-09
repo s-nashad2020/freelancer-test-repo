@@ -196,8 +196,8 @@ def main():
         client.set_client_id(client_id)
 
         # Set the scope you want to access
-        scope = "altinn:authentication/systemuser.request.read"
-        # scope = "skatteetaten:skattemelding"
+        # scope = "altinn:authentication/systemuser.request.read"
+        scope = "skatteetaten:skattemelding"
 
         # Optional: acting on behalf of another organization
         consumer_org = "922989451"  # org nr
