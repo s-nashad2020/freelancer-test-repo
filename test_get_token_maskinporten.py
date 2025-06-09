@@ -197,6 +197,7 @@ def main():
 
         # Set the scope you want to access
         scope = "altinn:authentication/systemuser.request.read"
+        # scope = "skatteetaten:skattemelding"
 
         # Optional: acting on behalf of another organization
         consumer_org = "922989451"  # org nr
