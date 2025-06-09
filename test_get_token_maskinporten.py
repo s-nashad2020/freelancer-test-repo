@@ -6,14 +6,14 @@ This script reads a JWK private key from maskinporten_private_key.json
 and requests an access token from Maskinporten test environment.
 """
 
+import base64
 import json
 import time
 import uuid
-import base64
+
+import jwt  # This should be PyJWT
 import requests
 from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
-import jwt as pyjwt
 
 
 class MaskinportenClient:
@@ -94,13 +94,17 @@ class MaskinportenClient:
 
         now = int(time.time())
 
-        # JWT Header
+        # JWT Header - must include 'kid' as per Maskinporten requirements
         headers = {
             "alg": "RS256",
             "typ": "JWT"
         }
+
+        # Include kid (key identifier) as required by Maskinporten
         if self.kid:
             headers["kid"] = self.kid
+        else:
+            raise Exception("❌ Key ID (kid) is required for Maskinporten")
 
         # JWT Payload
         payload = {
@@ -117,9 +121,12 @@ class MaskinportenClient:
             payload["consumer_org"] = consumer_org_no
             print(f"🏢 Acting on behalf of organization: {consumer_org_no}")
 
+        # Debug: Print JWT payload
+        print(f"🔍 JWT payload: {json.dumps(payload, indent=2)}")
+
         # Sign the JWT
         try:
-            token = pyjwt.encode(
+            token = jwt.encode(
                 payload,
                 self.private_key,
                 algorithm="RS256",
@@ -189,19 +196,19 @@ def main():
         client.set_client_id(client_id)
 
         # Set the scope you want to access
-        scope = "skatteetaten:some-scope"
+        scope = "altinn:authentication/systemuser.request.read"
 
         # Optional: acting on behalf of another organization
-        consumer_org = "922989451" # org nr
+        consumer_org = "922989451"  # org nr
         consumer_org = consumer_org if consumer_org else None
 
         # Get access token
         token_response = client.get_access_token(scope, consumer_org)
 
         if token_response:
-            print("\n" + "="*50)
+            print("\n" + "=" * 50)
             print("ACCESS TOKEN RECEIVED:")
-            print("="*50)
+            print("=" * 50)
             print(f"access_token: {token_response['access_token']}")
             print("\nYou can now use this token in your API calls!")
         else:
