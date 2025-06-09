@@ -38,4 +38,9 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+# secrets
 maskinporten_private_key.json
+
+# local python scripting
+pyproject.toml
