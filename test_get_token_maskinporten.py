@@ -180,7 +180,12 @@ def main():
         client = MaskinportenClient()
 
         # Set your client ID (you get this when you create the integration)
-        client_id = input("Enter your Maskinporten client ID: ").strip()
+
+        # TEST: https://sjolvbetjening.test.samarbeid.digdir.no/clients/6a3e4a77-1102-4bc6-a2bd-da6e5313ad7d
+        client_id = "6a3e4a77-1102-4bc6-a2bd-da6e5313ad7d"
+
+        # PROD: https://sjolvbetjening.samarbeid.digdir.no/clients/2847bb25-8724-4da9-aa86-711913d8c8fb
+        # client_id = "2847bb25-8724-4da9-aa86-711913d8c8fb"
         client.set_client_id(client_id)
 
         # Set the scope you want to access
