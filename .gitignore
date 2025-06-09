@@ -40,7 +40,10 @@ out/
 .kotlin
 
 # secrets
-maskinporten_private_key.json
+
+
+# Make this private later
+#maskinporten_private_key.json
 
 # local python scripting
 pyproject.toml
