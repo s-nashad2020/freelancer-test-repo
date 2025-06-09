@@ -13,7 +13,7 @@ import base64
 import requests
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
-import jwt
+import jwt as pyjwt
 
 
 class MaskinportenClient:
@@ -119,7 +119,7 @@ class MaskinportenClient:
 
         # Sign the JWT
         try:
-            token = jwt.encode(
+            token = pyjwt.encode(
                 payload,
                 self.private_key,
                 algorithm="RS256",
