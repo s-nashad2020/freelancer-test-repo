@@ -189,10 +189,10 @@ def main():
         client.set_client_id(client_id)
 
         # Set the scope you want to access
-        scope = input("Enter the scope (e.g., 'skatteetaten:some-scope'): ").strip()
+        scope = "skatteetaten:some-scope"
 
         # Optional: acting on behalf of another organization
-        consumer_org = input("Enter consumer org number (optional, press Enter to skip): ").strip()
+        consumer_org = "922989451" # org nr
         consumer_org = consumer_org if consumer_org else None
 
         # Get access token
