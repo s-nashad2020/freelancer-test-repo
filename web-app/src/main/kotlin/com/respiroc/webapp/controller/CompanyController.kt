@@ -1,4 +1,4 @@
-package com.respiroc.accountingapp.controller
+package com.respiroc.webapp.controller
 
 import com.respiroc.companylookup.model.CompanyInfo
 import com.respiroc.companylookup.model.CompanySearchResult

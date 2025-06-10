@@ -1,4 +1,4 @@
-package com.respiroc.accountingapp
+package com.respiroc.webapp
 
 import com.respiroc.companylookup.config.CompanyLookupConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Import
 
 @SpringBootApplication
 @Import(CompanyLookupConfig::class)
-class AccountingApplication
+class WebApplication
 
 fun main(args: Array<String>) {
-    runApplication<AccountingApplication>(*args)
+    runApplication<WebApplication>(*args)
 }
