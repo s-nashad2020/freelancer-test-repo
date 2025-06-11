@@ -1,9 +1,13 @@
-package com.respiroc.companylookup.service
+package com.respiroc.companylookup.application
 
-import com.respiroc.companylookup.model.*
+import com.respiroc.companylookup.domain.model.CompanyBasicInfo
+import com.respiroc.companylookup.domain.model.CompanyInfo
+import com.respiroc.companylookup.domain.model.CompanySearchResult
+import com.respiroc.companylookup.domain.model.ContactInfo
+import com.respiroc.companylookup.domain.model.FinancialInfo
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestClient
-import org.slf4j.LoggerFactory
 
 /**
  * Service for company lookup operations

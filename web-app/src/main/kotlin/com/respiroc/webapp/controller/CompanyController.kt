@@ -1,8 +1,8 @@
 package com.respiroc.webapp.controller
 
-import com.respiroc.companylookup.model.CompanyInfo
-import com.respiroc.companylookup.model.CompanySearchResult
-import com.respiroc.companylookup.service.CompanyLookupService
+import com.respiroc.companylookup.domain.model.CompanyInfo
+import com.respiroc.companylookup.domain.model.CompanySearchResult
+import com.respiroc.companylookup.application.CompanyLookupService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
