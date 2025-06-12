@@ -1,6 +1,11 @@
 package com.respiroc.companylookup.api
 
+import com.respiroc.companylookup.domain.model.CompanyInfo
+import com.respiroc.companylookup.domain.model.CompanySearchResult
+
 interface CompanyLookupInternalApi {
 
-    // TODO: Implements intranal api needed to expose
+    fun search(query: String, countryCode: String): CompanySearchResult
+    fun getInfo(companyId: String, countryCode: String): CompanyInfo
+
 }
