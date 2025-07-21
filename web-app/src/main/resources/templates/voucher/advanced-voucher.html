@@ -39,7 +39,6 @@
                                 Shortcuts
                             </wa-button>
 
-                            <!-- Lặp qua danh sách shortcut -->
                             <wa-dropdown-item th:each="shortcut : ${shortcutAction}" th:value="${shortcut.actionId}">
                                 <span th:text="${shortcut.description}"></span>
                                 <span slot="details" th:text="${shortcut.keyCombination}"></span>
