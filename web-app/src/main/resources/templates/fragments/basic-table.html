@@ -1,0 +1,44 @@
+<table class="wa-zebra-rows wa-hover-rows">
+    <thead>
+    <tr>
+        <th th:each="col : ${table.columns}" th:text="${col.label}"></th>
+        <th class="r-text-right" th:text="#{basic_table.actions}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${table.rows.isEmpty()}">
+        <td th:colspan="${table.columns.size() + 1}" class="r-no-data" th:text="#{basic_table.not_found}"></td>
+    </tr>
+    <tr th:each="row : ${table.rows}" th:id="'row-' + ${row[table.idField]}">
+        <td th:each="col : ${table.columns}"
+            th:text="${row[col.field]}"
+            th:data-label="${col.label}">
+        </td>
+        <td class="r-text-right">
+            <span th:each="action : ${table.actions}">
+                <wa-button
+                        size="small"
+                        th:text="${action.label}"
+                        th:if="${action.method == 'DELETE'}"
+                        variant="danger"
+                        th:hx-delete="${#strings.replace(action.url, '{id}', row[table.idField])}"
+                        hx-disabled-elt="this"
+                        hx-swap="outerHTML swap:0.5s"
+                        th:hx-confirm="${action.confirmMessage}"
+                        th:hx-target="'#row-' + ${row[table.idField]}">
+                </wa-button>
+
+                <wa-button
+                        size="small"
+                        th:text="${action.label}"
+                        th:if="${action.method == 'GET'}"
+                        variant="neutral"
+                        th:hx-get="${#strings.replace(action.url, '{id}', row[table.idField])}"
+                        hx-target="body"
+                        hx-push-url="true">
+                </wa-button>
+            </span>
+        </td>
+    </tr>
+    </tbody>
+</table>
