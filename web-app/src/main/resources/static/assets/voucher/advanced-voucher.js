@@ -19,6 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+const shortcutMap = {
+    'saveVoucher': () => document.getElementById("saveButton")?.click(),
+    'addNewRow': () => addPostingLine(),
+};
+
 function initializeExistingPostingComboboxes() {
     // Setup account comboboxes
     const accountItems = accounts.map(account => ({

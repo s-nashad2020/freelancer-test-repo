@@ -31,7 +31,21 @@
             <wa-card>
                 <div slot="header" class="wa-split">
                     <h4 th:text="${'Voucher ' + voucher.displayNumber}"/>
-                    <wa-button appearance="plain" th:text="#{voucher_upload_files}"/>
+                    <div>
+                        <wa-button appearance="plain" th:text="#{voucher_upload_files}"/>
+                        <wa-dropdown th:if="${not #lists.isEmpty(shortcutAction)}">
+                            <wa-button slot="trigger" with-caret>
+                                <wa-icon name="keyboard" style="margin-right: 0.5rem;"></wa-icon>
+                                Shortcuts
+                            </wa-button>
+
+                            <!-- Lặp qua danh sách shortcut -->
+                            <wa-dropdown-item th:each="shortcut : ${shortcutAction}" th:value="${shortcut.actionId}">
+                                <span th:text="${shortcut.description}"></span>
+                                <span slot="details" th:text="${shortcut.keyCombination}"></span>
+                            </wa-dropdown-item>
+                        </wa-dropdown>
+                    </div>
                 </div>
 
                 <div class="wa-stack">
