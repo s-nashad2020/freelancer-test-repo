@@ -84,7 +84,9 @@
         <!-- Page content will be inserted here -->
     </main>
 </wa-page>
-
+<script th:inline="javascript">
+    const shortcutAction = [[${shortcutAction}]] || null;
+</script>
 <!-- Custom JS -->
 <script th:src="@{/assets/base/base.js}"></script>
 
