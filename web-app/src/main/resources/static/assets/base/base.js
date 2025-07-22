@@ -112,3 +112,16 @@ function normalizeKeyCombination(event) {
     return keys.join("+");
 }
 
+document.addEventListener('htmx:configRequest', e => {
+    const spinner = document.getElementById('loading-indicator');
+    if (spinner) {
+        spinner.style.display = 'inline-block';
+    }
+});
+
+document.addEventListener('htmx:afterRequest', e => {
+    const spinner = document.getElementById('loading-indicator');
+    if (spinner) {
+        spinner.style.display = 'none';
+    }
+});

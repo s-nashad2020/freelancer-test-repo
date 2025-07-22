@@ -1,6 +1,5 @@
 package com.respiroc.webapp.controller.web
 
-import com.respiroc.ledger.application.AccountService
 import com.respiroc.ledger.application.VatService
 import com.respiroc.ledger.application.VoucherService
 import com.respiroc.webapp.constant.ShortcutRegistry
@@ -23,7 +22,6 @@ import java.time.LocalDate
 @Controller
 @RequestMapping(value = ["/voucher"])
 class VoucherWebController(
-    private val accountService: AccountService,
     private val currencyService: CurrencyService,
     private val vatService: VatService,
     private val voucherApi: VoucherService,
@@ -89,13 +87,10 @@ class VoucherWebController(
     // -------------------------------
 
     private fun setupModelAttributes(model: Model) {
-        val accounts = accountService.findAllAccounts()
         val vatCodes = vatService.findAllVatCodes()
         val supportedCurrencies = currencyService.getSupportedCurrencies()
 
         addCommonAttributesForCurrentTenant(model, "New Voucher")
-        model.addAttribute("accounts", accounts)
-        model.addAttribute("vatCodes", vatCodes)
         model.addAttribute("defaultVatCode", vatCodes.first().code)
         model.addAttribute("supportedCurrencies", supportedCurrencies)
     }
@@ -105,7 +100,6 @@ class VoucherWebController(
 @Controller
 @RequestMapping("/htmx/voucher")
 class VoucherHTMXController(
-    private val accountService: AccountService,
     private val currencyService: CurrencyService,
     private val vatService: VatService,
     private val voucherWebService: VoucherWebService,
@@ -156,14 +150,13 @@ class VoucherHTMXController(
         }
 
         try {
-            val callout = voucherWebService.updateVoucherWithPostings(
+            voucherWebService.updateVoucherWithPostings(
                 voucherId,
                 createVoucherRequest,
                 countryCode()
             )
 
-            model.addAttribute(calloutAttributeName, callout)
-
+            model.addAttribute(calloutAttributeName, Callout.Success("Voucher saved"))
             return "fragments/callout-message"
         } catch (e: Exception) {
             model.addAttribute(calloutAttributeName, Callout.Error("Failed to update voucher: ${e.message}"))
@@ -177,14 +170,11 @@ class VoucherHTMXController(
         @RequestParam(defaultValue = "0") rowCounter: Int,
         model: Model
     ): String {
-        val accounts = accountService.findAllAccounts()
         val vatCodes = vatService.findAllVatCodes()
         val supportedCurrencies = currencyService.getSupportedCurrencies()
         val initialDate = LocalDate.now()
 
         model.addAttribute("rowCounter", rowCounter)
-        model.addAttribute("accounts", accounts)
-        model.addAttribute("vatCodes", vatCodes)
         model.addAttribute("defaultVatCode", vatCodes.first().code)
         model.addAttribute("companyCurrencyCode", countryCode())
         model.addAttribute("supportedCurrencies", supportedCurrencies)
