@@ -1,4 +1,4 @@
-package com.respiroc.util.constant
+package com.respiroc.webapp.constant
 
 import ShortcutAction
 import kotlin.collections.listOf

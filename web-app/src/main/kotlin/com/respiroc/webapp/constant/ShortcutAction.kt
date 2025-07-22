@@ -1,4 +1,4 @@
-import com.respiroc.util.constant.ShortcutScreen
+import com.respiroc.webapp.constant.ShortcutScreen
 
 data class ShortcutAction(
     val screen: ShortcutScreen,

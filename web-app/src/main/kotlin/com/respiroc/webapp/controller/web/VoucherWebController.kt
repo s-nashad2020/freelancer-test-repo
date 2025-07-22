@@ -3,8 +3,8 @@ package com.respiroc.webapp.controller.web
 import com.respiroc.ledger.application.AccountService
 import com.respiroc.ledger.application.VatService
 import com.respiroc.ledger.application.VoucherService
-import com.respiroc.util.constant.ShortcutRegistry
-import com.respiroc.util.constant.ShortcutScreen
+import com.respiroc.webapp.constant.ShortcutRegistry
+import com.respiroc.webapp.constant.ShortcutScreen
 import com.respiroc.util.currency.CurrencyService
 import com.respiroc.webapp.controller.BaseController
 import com.respiroc.webapp.controller.request.CreateVoucherRequest
