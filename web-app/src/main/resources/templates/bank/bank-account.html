@@ -3,14 +3,17 @@
       layout:decorate="~{layout/base}">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/assets/bank/bank-account.css}">
 </head>
 <body>
 <main layout:fragment="content">
-    bank accounts
+    <div class="wa-split" style="justify-content: right">
+        <wa-button size="small" th:href="@{/bank/account/new}"
+                   variant="neutral" th:text="#{bank_account.register}">
+        </wa-button>
+    </div>
+    <div th:replace="~{fragments/bank-account-table :: table(accounts=${accounts})}"></div>
 </main>
 <th:block layout:fragment="scripts">
-    <script th:src="@{/assets/bank/bank-account.js}"></script>
 </th:block>
 </body>
 </html>

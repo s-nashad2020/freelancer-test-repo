@@ -3,14 +3,67 @@
       layout:decorate="~{layout/base}">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/assets/bank/bank-account-from.css}">
 </head>
 <body>
+
 <main layout:fragment="content">
-    new bank account
+    <div id="alert-container" style="margin-bottom: var(--wa-space-m)"></div>
+    <wa-card style="margin-bottom: var(--wa-space-m);">
+        <div style="padding: var(--wa-space-xl)">
+            <form id="registerBankAccountForm"
+                  th:object="${account}"
+                  method="post"
+                  hx-post="/htmx/bank/account"
+                  hx-indicator="#loading-indicator"
+                  hx-disabled-elt="#submitButton"
+                  style="--min-column-size: 500px;"
+                  hx-swap="outerHTML">
+                <div class="wa-grid">
+                    <wa-input
+                            id="accountNumber"
+                            name="accountNumber"
+                            th:label="#{bank_account.form.accountNumber}"
+                            th:field="*{accountNumber}"
+                            placeholder="Enter account number..."
+                            size="medium"
+                            required
+                            autocomplete="off">
+                    </wa-input>
+                    <wa-input
+                            id="bankCode"
+                            name="bankCode"
+                            th:label="#{bank_account.form.bankCode}"
+                            th:field="*{bankCode}"
+                            placeholder="Enter bank code..."
+                            size="medium"
+                            required
+                            autocomplete="off">
+                    </wa-input>
+                    <wa-select
+                            id="countryCode"
+                            name="countryCode"
+                            th:field="*{countryCode}"
+                            th:label="#{bank_account.form.country}">
+                        <wa-option value="NO" th:text="#{company.create.form.country.norway}"></wa-option>
+                    </wa-select>
+                </div>
+                <div style="margin-top: var(--wa-space-m);">
+                    <wa-button type="submit"
+                               variant="success"
+                               size="small"
+                               id="submitButton"
+                               th:text="#{bank_account.form.submit}">
+                    </wa-button>
+                    <wa-spinner id="loading-indicator"
+                                class="htmx-indicator"
+                                style="font-size: var(--wa-font-size-xl)">
+                    </wa-spinner>
+                </div>
+            </form>
+        </div>
+    </wa-card>
 </main>
 <th:block layout:fragment="scripts">
-    <script th:src="@{/assets/bank/bank-account-form.js}"></script>
 </th:block>
 </body>
 </html>

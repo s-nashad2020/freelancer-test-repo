@@ -1,3 +1,7 @@
 package com.respiroc.bank.application.payload
 
-data class NewBankAccountPayload(val countryCode: String, val accountNumber: String, val bankCode: String)
+data class NewBankAccountPayload(
+    var countryCode: String = "",
+    var accountNumber: String = "",
+    var bankCode: String = ""
+)
