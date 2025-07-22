@@ -50,8 +50,7 @@ class NavigationProvider {
             NavigationSection(
                 title = "Bank", icon = "bank",
                 items = listOf(
-                    NavigationSectionItem(label = "Bank Accounts", url = "/bank/account"),
-                    NavigationSectionItem(label = "New Bank Account", url = "/bank/account/new")
+                    NavigationSectionItem(label = "Bank Accounts Overview", url = "/bank/account"),
                 )
             )
         )
