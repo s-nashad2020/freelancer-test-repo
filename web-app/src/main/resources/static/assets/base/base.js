@@ -43,6 +43,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Handle section anchors
     const sectionAnchors = document.querySelectorAll("[slot*='navigation'] a[href*='#']");
     sectionAnchors.forEach(sectionAnchor => sectionAnchor.setAttribute('data-drawer', 'close'));
+
+    document.addEventListener("keydown", handleShortcutEvent);
 });
 
 // Handle aside visibility based on content
@@ -79,6 +81,36 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+function handleShortcutEvent(event) {
+    if (shortcutAction && shortcutAction.length > 0) {
+        const combo = normalizeKeyCombination(event);
+
+        const matchedShortcut = shortcutAction.find(
+            s => s.keyCombination.toLowerCase() === combo
+        );
+
+        if (matchedShortcut) {
+            event.preventDefault();
+            const action = shortcutMap[matchedShortcut.actionId];
+            if (action) {
+                action();
+            } else {
+                console.warn("No handler for actionId:", matchedShortcut.actionId);
+            }
+        }
+    }
+}
+
+function normalizeKeyCombination(event) {
+    const keys = [];
+    if (event.ctrlKey) keys.push("ctrl");
+    if (event.altKey) keys.push("alt");
+    if (event.shiftKey) keys.push("shift");
+    const key = event.key.toLowerCase();
+    keys.push(key);
+    return keys.join("+");
+}
 
 document.addEventListener('htmx:configRequest', e => {
     const spinner = document.getElementById('loading-indicator');

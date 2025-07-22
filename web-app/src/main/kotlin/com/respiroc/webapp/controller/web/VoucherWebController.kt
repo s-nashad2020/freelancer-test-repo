@@ -45,7 +45,7 @@ class VoucherWebController(
         val effectiveEndDate = endDate ?: LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
 
         val vouchers = voucherApi.findVoucherSummariesByDateRange(effectiveStartDate, effectiveEndDate)
-        
+
         addCommonAttributesForCurrentTenant(model, "Voucher Overview")
         model.addAttribute("vouchers", vouchers)
         model.addAttribute("startDate", effectiveStartDate)
@@ -76,6 +76,7 @@ class VoucherWebController(
         model.addAttribute("uiPostingLines", uiPostingLines)
         model.addAttribute("voucherId", id)
         model.addAttribute("voucherDate", voucher.date.toString())
+        model.addAttribute("shortcutAction", ShortcutRegistry.getByScreen(ShortcutScreen.VOUCHERS_ADVANCED))
         return "voucher/advanced-voucher"
     }
 
