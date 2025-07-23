@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title != null ? title + ' - Reai' : 'Reai'}" />
+    <title th:text="${title != null ? title + ' - Reai' : 'Reai'}"/>
     <th:block th:replace="~{layout/libs :: common-libs}"></th:block>
     <link rel="stylesheet" th:href="@{/assets/base/base.css}">
 
@@ -17,10 +17,10 @@
 </head>
 <body class="wa-cloak">
 
-<wa-page mobile-breakpoint="920" th:if="${user != null}">
+<wa-page disable-sticky="header" mobile-breakpoint="920" th:if="${user != null}">
     <header slot="header" class="wa-split">
         <div class="wa-cluster">
-            <span class="wa-heading-s wa-desktop-only" th:text="#{layout.header.title}" />
+            <span class="wa-heading-s wa-desktop-only" th:text="#{layout.header.title}"/>
             <wa-dropdown>
                 <wa-button slot="trigger" size="small" variant="brand" appearance="outlined" with-caret
                            th:text="${currentTenant != null ? currentTenant.companyName : 'Select Company'}">
@@ -34,12 +34,12 @@
                         th:hx-indicator="'#loading-indicator'"
                         th:disabled="${currentTenant?.id == tenant.id}">
 
-                    <span th:text="${tenant.companyName}" />
+                    <span th:text="${tenant.companyName}"/>
                 </wa-dropdown-item>
                 <wa-divider></wa-divider>
                 <wa-dropdown-item onclick="window.open('/tenant/create')">
                     <wa-icon slot="icon" name="plus"></wa-icon>
-                    <span th:text="#{layout.company.selector.create}" />
+                    <span th:text="#{layout.company.selector.create}"/>
                 </wa-dropdown-item>
             </wa-dropdown>
         </div>
@@ -73,7 +73,8 @@
     <nav slot="navigation"
          th:replace="~{fragments/navigation :: navigation(sections=${@navigationProvider.getNavigationSections()},user=${user})}"></nav>
 
-    <wa-split-panel disabled class="r-split-panel-disabled" id="main-split-panel" position="100" style="--min: 50%;" primary="start">
+    <wa-split-panel disabled class="r-split-panel-disabled r-split-panel" id="main-split-panel" position="100"
+                    primary="start">
         <div slot="start">
             <div th:if="${callout}" style="padding: var(--wa-space-m) var(--wa-space-l) 0;">
                 <wa-callout th:attr="variant=${callout.variant()}, data-link=${callout.link}" open
@@ -90,12 +91,18 @@
             </main>
         </div>
         <div slot="end">
-            <div class="wa-desktop-only" id="aside-panel" style="height: 100%">
+            <div id="aside-panel" style="height: 100%">
                 <wa-button id="close-split-btn"
-                        onclick="disableSplit()"
-                        size="small"
-                        variant="neutral"
-                        style="display: none; transform: rotate(-0.25turn); position: absolute; z-index: 10; align-self: anchor-center; padding-left: var(--wa-space-xs);">
+                           onclick="disableSplit()"
+                           size="small"
+                           variant="neutral"
+                           style="
+                           display: none;
+                           position: fixed;
+                           top: 50%;
+                           transform: translateY(-50%) rotate(-0.25turn);
+                           z-index: 10;
+                           padding-left: var(--wa-space-xs);">
                     ⮟
                 </wa-button>
                 <div layout:fragment="aside" id="aside-content" style="height: 100%">

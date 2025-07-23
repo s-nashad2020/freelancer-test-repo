@@ -69,3 +69,13 @@ main {
     --divider-width: 0px;
     --divider-hit-area: 0px;
 }
+
+.r-split-panel {
+    --min: 50%;
+}
+
+@media (max-width: 920px) {
+    .r-split-panel {
+        --min: 0%;
+    }
+}
