@@ -2,6 +2,8 @@ package com.respiroc.webapp.controller.web
 
 import com.respiroc.ledger.application.VatService
 import com.respiroc.ledger.application.VoucherService
+import com.respiroc.webapp.constant.ShortcutRegistry
+import com.respiroc.webapp.constant.ShortcutScreen
 import com.respiroc.util.currency.CurrencyService
 import com.respiroc.webapp.controller.BaseController
 import com.respiroc.webapp.controller.request.CreateVoucherRequest
@@ -45,7 +47,7 @@ class VoucherWebController(
         val effectiveEndDate = endDate ?: LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
 
         val vouchers = voucherApi.findVoucherSummariesByDateRange(effectiveStartDate, effectiveEndDate)
-        
+
         addCommonAttributesForCurrentTenant(model, "Voucher Overview")
         model.addAttribute("vouchers", vouchers)
         model.addAttribute("startDate", effectiveStartDate)
@@ -76,6 +78,7 @@ class VoucherWebController(
         model.addAttribute("uiPostingLines", uiPostingLines)
         model.addAttribute("voucherId", id)
         model.addAttribute("voucherDate", voucher.date.toString())
+        model.addAttribute("shortcutAction", ShortcutRegistry.getByScreen(ShortcutScreen.VOUCHERS_ADVANCED))
         return "voucher/advanced-voucher"
     }
 
@@ -153,8 +156,7 @@ class VoucherHTMXController(
                 countryCode()
             )
 
-            model.addAttribute(calloutAttributeName, Callout.Success("Voucher saved"))
-            return "fragments/callout-message"
+            return "fragments/empty"
         } catch (e: Exception) {
             model.addAttribute(calloutAttributeName, Callout.Error("Failed to update voucher: ${e.message}"))
             return "fragments/callout-message"
