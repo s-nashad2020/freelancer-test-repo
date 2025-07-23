@@ -2,6 +2,5 @@ package com.respiroc.bank.application.payload
 
 data class NewBankAccountPayload(
     var countryCode: String,
-    var accountNumber: String,
-    var bankCode: String
+    var bban: String
 )

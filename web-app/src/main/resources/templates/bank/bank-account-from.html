@@ -16,26 +16,6 @@
                   style="--min-column-size: 500px;"
                   hx-swap="outerHTML">
                 <div class="wa-grid">
-                    <wa-input
-                            id="accountNumber"
-                            name="accountNumber"
-                            th:label="#{bank_account.form.accountNumber}"
-                            th:field="*{accountNumber}"
-                            placeholder="Enter account number..."
-                            size="medium"
-                            required
-                            autocomplete="off">
-                    </wa-input>
-                    <wa-input
-                            id="bankCode"
-                            name="bankCode"
-                            th:label="#{bank_account.form.bankCode}"
-                            th:field="*{bankCode}"
-                            placeholder="Enter bank code..."
-                            size="medium"
-                            required
-                            autocomplete="off">
-                    </wa-input>
                     <wa-select
                             id="countryCode"
                             name="countryCode"
@@ -44,6 +24,16 @@
                             th:label="#{bank_account.form.country}">
                         <wa-option value="NO" th:text="#{company.create.form.country.norway}"></wa-option>
                     </wa-select>
+                    <wa-input
+                            id="bban"
+                            name="bban"
+                            th:label="#{bank_account.form.accountNumber}"
+                            th:field="*{bban}"
+                            placeholder="Enter account number..."
+                            size="medium"
+                            required
+                            autocomplete="off">
+                    </wa-input>
                 </div>
                 <div style="margin-top: var(--wa-space-m);">
                     <wa-button type="submit"

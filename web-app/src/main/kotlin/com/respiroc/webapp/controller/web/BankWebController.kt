@@ -19,7 +19,6 @@ class BankWebController(private val bankAccountService: BankAccountService) : Ba
         return "bank/bank-account"
     }
 
-
     @DeleteMapping("/account/{id}")
     @ResponseBody
     fun deleteBankAccount(@PathVariable id: Long) {
@@ -41,9 +40,8 @@ class BankHTMXWebController(private val bankAccountService: BankAccountService) 
     @PostMapping("/account")
     fun registerBankAccount(@ModelAttribute newBackAccount: NewBankAccountRequest): String {
         val bankAccount = NewBankAccountPayload(
-            bankCode = newBackAccount.countryCode,
-            accountNumber = newBackAccount.accountNumber,
-            countryCode = newBackAccount.accountNumber
+            bban = newBackAccount.bban,
+            countryCode = newBackAccount.countryCode
         )
         bankAccountService.save(bankAccount)
         return "redirect:htmx:/bank/account"

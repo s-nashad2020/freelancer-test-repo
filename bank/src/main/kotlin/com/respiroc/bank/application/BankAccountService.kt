@@ -13,9 +13,10 @@ class BankAccountService(private val bankAccountRepository: BankAccountRepositor
     fun deleteById(id: Long) = bankAccountRepository.deleteById(id)
 
     fun save(newAccount: NewBankAccountPayload): BankAccount {
+        val bbanParser = BBANParser.fromCountryCode(newAccount.countryCode)
         val account = BankAccount()
-        account.accountNumber = newAccount.accountNumber
-        account.bankCode = newAccount.bankCode
+        account.accountNumber = bbanParser.extractAccountNumber(newAccount.bban)
+        account.bankCode = bbanParser.extractBankCode(newAccount.bban)
         account.countryCode = newAccount.countryCode
         return bankAccountRepository.save(account)
     }
