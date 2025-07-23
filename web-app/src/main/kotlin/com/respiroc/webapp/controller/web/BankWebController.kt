@@ -40,10 +40,11 @@ class BankHTMXWebController(private val bankAccountService: BankAccountService) 
 
     @PostMapping("/account")
     fun registerBankAccount(@ModelAttribute newBackAccount: NewBankAccountRequest): String {
-        val bankAccount = NewBankAccountPayload()
-        bankAccount.accountNumber = newBackAccount.accountNumber
-        bankAccount.countryCode = newBackAccount.countryCode
-        bankAccount.bankCode = newBackAccount.bankCode
+        val bankAccount = NewBankAccountPayload(
+            bankCode = newBackAccount.countryCode,
+            accountNumber = newBackAccount.accountNumber,
+            countryCode = newBackAccount.accountNumber
+        )
         bankAccountService.save(bankAccount)
         return "redirect:htmx:/bank/account"
     }
