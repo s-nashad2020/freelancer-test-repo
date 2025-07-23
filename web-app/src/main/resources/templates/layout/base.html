@@ -73,7 +73,7 @@
     <nav slot="navigation"
          th:replace="~{fragments/navigation :: navigation(sections=${@navigationProvider.getNavigationSections()},user=${user})}"></nav>
 
-    <wa-split-panel position="100" style="--min: 50%;">
+    <wa-split-panel disabled class="r-split-panel-disabled" id="main-split-panel" position="100" style="--min: 50%;" primary="start">
         <div slot="start">
             <div th:if="${callout}" style="padding: var(--wa-space-m) var(--wa-space-l) 0;">
                 <wa-callout th:attr="variant=${callout.variant()}, data-link=${callout.link}" open
@@ -91,6 +91,13 @@
         </div>
         <div slot="end">
             <div class="wa-desktop-only" id="aside-panel" style="height: 100%">
+                <wa-button id="close-split-btn"
+                        onclick="disableSplit()"
+                        size="small"
+                        variant="neutral"
+                        style="display: none; transform: rotate(-0.25turn); position: absolute; z-index: 10; align-self: anchor-center; padding-left: var(--wa-space-xs);">
+                    ⮟
+                </wa-button>
                 <div layout:fragment="aside" id="aside-content" style="height: 100%">
                     <!-- Aside content will be inserted here -->
                 </div>

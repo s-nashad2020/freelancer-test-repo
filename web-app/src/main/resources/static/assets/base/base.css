@@ -1,3 +1,7 @@
+wa-page {
+    --menu-width: 15rem;
+}
+
 wa-page[view='desktop'] {
     [slot*='navigation'] {
         border-inline-end: var(--wa-border-width-s) var(--wa-border-style) var(--wa-color-surface-border);
@@ -35,6 +39,7 @@ main {
     padding: var(--wa-space-l);
     min-height: 90.3vh;
 }
+
 .r-opacity-25 {
     opacity: 0.25;
 }
@@ -58,4 +63,9 @@ main {
 
 .htmx-request.htmx-indicator {
     opacity: 1;
+}
+
+.r-split-panel-disabled {
+    --divider-width: 0px;
+    --divider-hit-area: 0px;
 }

@@ -101,3 +101,29 @@ document.addEventListener('htmx:afterRequest', e => {
         spinner.style.display = 'none';
     }
 });
+
+function activateSplit() {
+    const splitPanel = document.getElementById('main-split-panel');
+    const closeButton = document.getElementById('close-split-btn');
+    if (splitPanel) {
+        splitPanel.position = 60;
+        splitPanel.disabled = false;
+        splitPanel.classList.remove('r-split-panel-disabled');
+        if (closeButton) {
+            closeButton.style.display = 'block';
+        }
+    }
+}
+
+function disableSplit() {
+    const splitPanel = document.getElementById('main-split-panel');
+    const closeButton = document.getElementById('close-split-btn');
+    if (splitPanel) {
+        splitPanel.position = 100;
+        splitPanel.disabled = true;
+        splitPanel.classList.add('r-split-panel-disabled');
+        if (closeButton) {
+            closeButton.style.display = 'none';
+        }
+    }
+}
