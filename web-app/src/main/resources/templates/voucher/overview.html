@@ -41,8 +41,8 @@
                 <wa-card>
                     <wa-progress-bar id="loading-indicator" indeterminate class="htmx-indicator"></wa-progress-bar>
                     <div class="wa-stack wa-gap-m">
-                        <div th:if="${#lists.isEmpty(vouchers)}" class="wa-center">
-                            <div class="wa-stack wa-gap-m wa-center">
+                        <div th:if="${#lists.isEmpty(vouchers)}" class="wa-align-items-center">
+                            <div class="wa-stack wa-gap-m wa-align-items-center">
                                 <wa-icon name="chart-line" style="font-size: var(--wa-font-size-4xl); opacity: 0.5;"></wa-icon>
                                 <h3 class="wa-heading-m" th:text="#{no_vouchers_found}"/>
                             </div>
