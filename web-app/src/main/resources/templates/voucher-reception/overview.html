@@ -68,14 +68,23 @@
             </div>
         </div>
 
-        <wa-drawer id="drawer-custom-size" class="drawer-custom-size" style="--size: 45vw; --spacing: 0">
+<!--        <wa-drawer id="drawer-custom-size" class="drawer-custom-size">
             <div id="pdf-container" style="height: 100%; overflow-y: hidden;">
                 <embed id="pdf-embed" type="application/pdf"
                        style="width: 100%; height: 100%; border: none; display: none;"/>
             </div>
-        </wa-drawer>
+        </wa-drawer>-->
     </div>
 
 </main>
+
+<div layout:fragment="aside">
+    <div id="drawer-custom-size" class="drawer-custom-size" style="height: 100%">
+        <div id="pdf-container" style="height: 100%; overflow-y: hidden;">
+            <embed id="pdf-embed" type="application/pdf" style="width: 100%; height: 100%; border: none; display: none;"/>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

@@ -47,30 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener("keydown", handleShortcutEvent);
 });
 
-// Handle aside visibility based on content
-document.addEventListener('DOMContentLoaded', function () {
-    const asideContent = document.getElementById('aside-content');
-    const page = document.querySelector('wa-page');
-
-    function updateAsideVisibility() {
-        if (!asideContent || !page) return;
-
-        const hasContent = asideContent.textContent.trim().length > 0 || asideContent.children.length > 0;
-
-        if (hasContent) {
-            page.setAttribute('data-aside-visible', 'true');
-        } else {
-            page.setAttribute('data-aside-visible', 'false');
-        }
-    }
-
-    // Check on load
-    updateAsideVisibility();
-
-    // Check after HTMX requests
-    document.addEventListener('htmx:afterSettle', updateAsideVisibility);
-});
-
 // Handle clickable callouts
 document.addEventListener('click', function(e) {
     const callout = e.target.closest('wa-callout[data-link]');

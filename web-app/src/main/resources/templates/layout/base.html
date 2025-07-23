@@ -8,7 +8,6 @@
     <th:block th:replace="~{layout/libs :: common-libs}"></th:block>
     <link rel="stylesheet" th:href="@{/assets/base/base.css}">
 
-    <!-- Custom head content -->
     <th:block layout:fragment="head"></th:block>
 
     <th:block th:if="${@environment.getActiveProfiles().length > 0}">
@@ -74,35 +73,39 @@
     <nav slot="navigation"
          th:replace="~{fragments/navigation :: navigation(sections=${@navigationProvider.getNavigationSections()},user=${user})}"></nav>
 
-
-    <aside slot="aside" class="wa-desktop-only" th:if="${user != null}" id="aside-panel">
-        <div layout:fragment="aside" id="aside-content">
-            <!-- Aside content will be inserted here -->
+    <wa-split-panel position="100" style="--min: 50%;">
+        <div slot="start">
+            <div th:if="${callout}" style="padding: var(--wa-space-m) var(--wa-space-l) 0;">
+                <wa-callout th:attr="variant=${callout.variant()}, data-link=${callout.link}" open
+                            th:classappend="${callout.link != null} ? 'clickable-callout' : ''"
+                            th:style="${callout.link != null} ? 'cursor: pointer;' : ''">
+                    <wa-icon slot="icon" th:attr="name=${callout.icon()}" variant="regular"></wa-icon>
+                    <span th:text="${callout.message}">Message</span>
+                    <wa-icon th:if="${callout.link != null}" slot="action" name="arrow-up-right-from-square"
+                             variant="regular"></wa-icon>
+                </wa-callout>
+            </div>
+            <main layout:fragment="content" id="main-content">
+                <!-- Page content will be inserted here -->
+            </main>
         </div>
-    </aside>
+        <div slot="end">
+            <div class="wa-desktop-only" id="aside-panel" style="height: 100%">
+                <div layout:fragment="aside" id="aside-content" style="height: 100%">
+                    <!-- Aside content will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </wa-split-panel>
 
-    <div th:if="${callout}" style="padding: var(--wa-space-m) var(--wa-space-l) 0;">
-        <wa-callout th:attr="variant=${callout.variant()}, data-link=${callout.link}" open
-                    th:classappend="${callout.link != null} ? 'clickable-callout' : ''"
-                    th:style="${callout.link != null} ? 'cursor: pointer;' : ''">
-            <wa-icon slot="icon" th:attr="name=${callout.icon()}" variant="regular"></wa-icon>
-            <span th:text="${callout.message}">Message</span>
-            <wa-icon th:if="${callout.link != null}" slot="action" name="arrow-up-right-from-square"
-                     variant="regular"></wa-icon>
-        </wa-callout>
-    </div>
-
-    <main layout:fragment="content" id="main-content">
-        <!-- Page content will be inserted here -->
-    </main>
 </wa-page>
-<script th:inline="javascript">
-    const shortcutAction = [[${shortcutAction}]] || null;
-</script>
-<!-- Custom JS -->
-<script th:src="@{/assets/base/base.js}"></script>
 
-<!-- Custom scripts -->
+<script th:inline="javascript">
+    const shortcutAction = /*[[${shortcutAction}]]*/ null;
+</script>
+
+<script th:src="@{/assets/base/base.js}"></script>
 <th:block layout:fragment="scripts"></th:block>
+
 </body>
 </html>
