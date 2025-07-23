@@ -78,7 +78,7 @@ class VoucherReceptionWebController(
             val updatedDocuments = voucherReceptionDocumentRepository.findAll()
             model.addAttribute("documents", updatedDocuments)
 
-            return "voucher-reception/overview :: documentTableBody"
+            return "voucher-reception/overview :: tableContainer"
         } catch (e: Exception) {
             return "Error saving files"
         }
