@@ -1,10 +1,12 @@
 package com.respiroc.webapp.controller.web
 
+import com.respiroc.attachment.application.VoucherAttachmentService
+import com.respiroc.attachment.domain.repository.VoucherAttachmentRepository
 import com.respiroc.ledger.application.VatService
 import com.respiroc.ledger.application.VoucherService
+import com.respiroc.util.currency.CurrencyService
 import com.respiroc.webapp.constant.ShortcutRegistry
 import com.respiroc.webapp.constant.ShortcutScreen
-import com.respiroc.util.currency.CurrencyService
 import com.respiroc.webapp.controller.BaseController
 import com.respiroc.webapp.controller.request.CreateVoucherRequest
 import com.respiroc.webapp.controller.response.Callout
@@ -12,12 +14,18 @@ import com.respiroc.webapp.service.VoucherWebService
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest
 import jakarta.validation.Valid
 import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.server.ResponseStatusException
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.util.*
 
 @Controller
 @RequestMapping(value = ["/voucher"])
@@ -25,7 +33,8 @@ class VoucherWebController(
     private val currencyService: CurrencyService,
     private val vatService: VatService,
     private val voucherApi: VoucherService,
-    private val voucherWebService: VoucherWebService
+    private val voucherWebService: VoucherWebService,
+    private val voucherAttachmentService: VoucherAttachmentService
 ) : BaseController() {
 
     @GetMapping(value = [])
@@ -72,12 +81,15 @@ class VoucherWebController(
             emptyList()
         }
 
+        val attachments = voucherAttachmentService.findAttachmentsByVoucherId(id)
+
         setupModelAttributes(model)
         model.addAttribute("companyCurrencyCode", countryCode())
         model.addAttribute("voucher", voucher)
         model.addAttribute("uiPostingLines", uiPostingLines)
         model.addAttribute("voucherId", id)
         model.addAttribute("voucherDate", voucher.date.toString())
+        model.addAttribute("attachments", attachments)
         model.addAttribute("shortcutAction", ShortcutRegistry.getByScreen(ShortcutScreen.VOUCHERS_ADVANCED))
         return "voucher/advanced-voucher"
     }
@@ -276,4 +288,80 @@ class VoucherHTMXController(
         val isBalanced: Boolean,
         val hasValidEntries: Boolean
     )
+}
+
+@Controller
+@RequestMapping("/voucher-attachment")
+class VoucherAttachmentWebController(
+    private val voucherAttachmentRepository: VoucherAttachmentRepository
+) : BaseController() {
+
+    @GetMapping("/document/{id}/pdf")
+    fun getDocumentData(@PathVariable id: Long): ResponseEntity<String> {
+        val voucherAttachment = voucherAttachmentRepository.findById(id)
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Document not found") }
+
+        val base64Data = Base64.getEncoder().encodeToString(voucherAttachment.attachment.fileData)
+        val dataUrl = "data:application/pdf;base64,$base64Data"
+        return ResponseEntity.ok().contentType(MediaType.TEXT_HTML)
+            .body("""<embed id="pdf-embed" type="application/pdf" src="$dataUrl" style="width: 100%; height: 100%; border: none;"/>""");
+    }
+}
+
+@Controller
+@RequestMapping("/htmx/voucher-attachment")
+class VoucherAttachmentHTMXController(
+    private val voucherAttachmentService: VoucherAttachmentService
+) : BaseController() {
+
+    @PostMapping("/upload")
+    @HxRequest
+    fun uploadFiles(
+        @RequestParam("files") files: List<MultipartFile>,
+        @RequestParam("voucherId") voucherId: Long,
+        model: Model
+    ): String {
+        try {
+            files.forEach { file ->
+                val fileData = file.bytes
+                val filename = file.originalFilename ?: "unnamed"
+                val mimeType = file.contentType ?: "application/octet-stream"
+
+                voucherAttachmentService.saveAttachment(
+                    voucherId = voucherId,
+                    fileData = fileData,
+                    filename = filename,
+                    mimeType = mimeType
+                )
+            }
+
+            val updatedAttachments = voucherAttachmentService.findAttachmentsByVoucherId(voucherId)
+            model.addAttribute("attachments", updatedAttachments)
+            model.addAttribute("voucherId", voucherId)
+
+            return "voucher/advanced-voucher :: attachmentsTable"
+        } catch (_: Exception) {
+            return "Error saving files"
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @HxRequest
+    fun deleteAttachment(
+        @PathVariable id: Long,
+        @RequestParam("voucherId") voucherId: Long,
+        model: Model
+    ): String {
+        try {
+            voucherAttachmentService.deleteAttachment(id)
+
+            val updatedAttachments = voucherAttachmentService.findAttachmentsByVoucherId(voucherId)
+            model.addAttribute("attachments", updatedAttachments)
+            model.addAttribute("voucherId", voucherId)
+
+            return "voucher/advanced-voucher :: attachmentsTable"
+        } catch (_: Exception) {
+            return "Error deleting attachment"
+        }
+    }
 }
