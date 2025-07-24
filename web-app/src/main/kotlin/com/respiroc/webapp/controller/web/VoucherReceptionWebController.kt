@@ -54,7 +54,6 @@ class VoucherReceptionWebController(
     @HxRequest
     fun uploadFiles(
         @RequestParam("files") files: List<MultipartFile>,
-        @RequestParam("tenantSlug") tenantSlug: String,
         model: Model
     ): String {
         val currentUser = springUser()
@@ -77,7 +76,7 @@ class VoucherReceptionWebController(
             model.addAttribute("documents", updatedDocuments)
 
             return "voucher-reception/overview :: tableContainer"
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return "Error saving files"
         }
     }

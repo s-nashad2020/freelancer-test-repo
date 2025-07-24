@@ -12,13 +12,12 @@
     </div>
 
     <form id="upload-form"
-          hx-post="/voucher-reception/upload"
-          hx-target="#table-container"
-          hx-swap="outerHTML"
-          hx-encoding="multipart/form-data"
+          th:hx-post="'/voucher-reception/upload'"
+          th:hx-target="'#table-container'"
+          th:hx-swap="'outerHTML'"
+          th:hx-encoding="'multipart/form-data'"
           style="display:none">
         <input type="file" name="files" id="file-input" multiple/>
-        <input type="hidden" name="tenantSlug" th:value="${tenantSlug}"/>
     </form>
 
     <div id="pageContent" class="r-voucher-reception-container">
