@@ -37,7 +37,7 @@ wa-page > [slot='header'] {
 
 main {
     padding: var(--wa-space-l);
-    min-height: 90.3vh;
+    min-height: 100vh;
 }
 
 .r-opacity-25 {

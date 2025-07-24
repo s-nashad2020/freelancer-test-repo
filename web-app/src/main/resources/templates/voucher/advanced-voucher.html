@@ -47,78 +47,69 @@
                     <wa-button appearance="plain" th:text="#{voucher_upload_files}"/>
                 </div>
 
-                <wa-tab-group>
-                    <wa-tab panel="general">General</wa-tab>
-                    <wa-tab panel="attachments">Attachments</wa-tab>
+                <!-- Voucher Information - Date and Description on same line -->
+                <div class="wa-cluster" style="gap: var(--wa-space-m);">
+                    <div>
+                        <label for="voucherDate" th:utext="#{voucher_date_label}"><span>*</span></label>
+                        <wa-input id="voucherDate" name="voucherDate" required size="small"
+                                  th:value="${voucherDate}"
+                                  type="date"/>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="voucherDescription" th:text="#{description}"/>
+                        <wa-input id="voucherDescription" name="voucherDescription"
+                                  size="small"
+                                  th:placeholder="#{description}"
+                                  th:value="${voucher?.description ?: ''}"
+                                  type="text"/>
+                    </div>
+                </div>
 
-                    <wa-tab-panel name="general">
-                        <div class="wa-stack">
-                            <div>
-                                <label for="voucherDate" th:utext="#{voucher_date_label}">Date <span>*</span></label>
-                                <wa-input id="voucherDate" name="voucherDate" required size="small"
-                                          th:value="${voucherDate}"
-                                          type="date"/>
-                            </div>
-                            <div>
-                                <label for="voucherDescription" th:text="#{description}"/>
-                                <wa-input id="voucherDescription" name="voucherDescription"
-                                          size="small"
-                                          th:placeholder="#{description}"
-                                          th:value="${voucher?.description ?: ''}"
-                                          type="text"/>
-                            </div>
+                <!-- Attachments Section - Below voucher information -->
+                <div class="wa-stack wa-gap-s" style="margin-top: var(--wa-space-l);">
+                    <div class="wa-split">
+                        <h5 class="wa-heading-s" th:text="#{attachments}"/>
+                    </div>
+
+                    <div id="attachments-table-container" th:fragment="attachmentsTable">
+
+                        <div class="wa-stack wa-align-items-center wa-placeholder wa-link-plain"
+                             th:if="${#lists.isEmpty(attachments)}"
+                             style="margin: auto;">
+                            <wa-icon name="paperclip" style="font-size: var(--wa-font-size-2xl);" class="wa-caption-l"></wa-icon>
+                            <p class="wa-heading-m" th:text="#{no_attachments_found}"/>
                         </div>
-                    </wa-tab-panel>
 
-                    <wa-tab-panel name="attachments">
-                        <div id="attachments-table-container" th:fragment="attachmentsTable">
-                            <wa-card th:if="${#lists.isEmpty(attachments)}" style="border-radius: var(--wa-border-radius-square)">
-                                <div class="wa-align-items-center">
-                                    <div class="wa-stack wa-gap-m wa-align-items-center">
-                                        <wa-icon name="paperclip"
-                                                 style="font-size: var(--wa-font-size-4xl); opacity: 0.5;"></wa-icon>
-                                        <h3 class="wa-heading-m" th:text="#{no_attachments_found}"/>
-                                    </div>
+                        <div class="wa-stack wa-gap-xs" th:if="${!#lists.isEmpty(attachments)}">
+                            <div th:each="attachment : ${attachments}"
+                                 class="wa-split wa-align-items-center"
+                                 style="padding: var(--wa-space-xs); border-radius: var(--wa-border-radius-s); background: var(--wa-color-surface-raised);">
+                                <div style="flex: 1; min-width: 0;">
+                                    <div class="wa-text-s"
+                                         th:text="${attachment.attachment.filename}"
+                                         style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"/>
                                 </div>
-                            </wa-card>
-
-                            <table class="r-voucher-attachment-table" th:if="${!#lists.isEmpty(attachments)}">
-                                <thead>
-                                <tr>
-                                    <th th:text="#{filename}"/>
-                                    <th th:text="#{created_at}"/>
-                                    <th th:text="#{action}"/>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="attachment : ${attachments}">
-                                    <td th:text="${attachment.attachment.filename}"></td>
-                                    <td th:text="${#temporals.format(attachment.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
-                                    <td>
-                                        <wa-button type="button" size="small" variant="danger"
-                                                   th:hx-delete="@{/htmx/voucher-attachment/{id}(id=${attachment.id}, voucherId=${voucherId})}"
-                                                   th:hx-target="'#attachments-table-container'"
-                                                   th:hx-swap="'outerHTML'"
-                                                   th:hx-confirm="'Are you sure you want to delete this attachment?'">
-                                            <wa-icon label="Delete attachment" name="trash"></wa-icon>
-                                        </wa-button>
-                                        <wa-button type="button" size="small" variant="neutral"
-                                                   th:onclick="activateSplit()"
-                                                   th:hx-get="@{/voucher-attachment/document/{id}/pdf(id=${attachment.id})}"
-                                                   th:hx-target="'#pdf-embed'"
-                                                   th:hx-swap="'outerHTML'"
-                                                   data-drawer="open drawer-custom-size"
-                                                   th:hx-trigger="'click delay:200ms'"
-                                                   >
-                                            <wa-icon label="Show" name="paperclip"></wa-icon>
-                                        </wa-button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                <div class="wa-cluster wa-gap-xs" style="justify-content: end;">
+                                    <wa-button type="button" size="small" variant="neutral"
+                                               th:onclick="activateSplit()"
+                                               th:hx-get="@{/voucher-attachment/document/{id}/pdf(id=${attachment.id})}"
+                                               th:hx-target="'#pdf-embed'"
+                                               th:hx-swap="'outerHTML'"
+                                               th:hx-trigger="'click delay:200ms'">
+                                        <wa-icon label="Show" name="paperclip"></wa-icon>
+                                    </wa-button>
+                                    <wa-button type="button" size="small" variant="danger"
+                                               th:hx-delete="@{/htmx/voucher-attachment/{id}(id=${attachment.id}, voucherId=${voucherId})}"
+                                               th:hx-target="'#attachments-table-container'"
+                                               th:hx-swap="'outerHTML'"
+                                               th:hx-confirm="'Are you sure you want to delete this attachment?'">
+                                        <wa-icon label="Delete attachment" name="trash"></wa-icon>
+                                    </wa-button>
+                                </div>
+                            </div>
                         </div>
-                    </wa-tab-panel>
-                </wa-tab-group>
+                    </div>
+                </div>
             </wa-card>
 
             <wa-card>
@@ -278,7 +269,7 @@
 </main>
 
 <div layout:fragment="aside">
-    <div id="drawer-custom-size" class="drawer-custom-size" style="height: 100%">
+    <div id="aside-split" style="height: 100%">
         <div id="pdf-container" style="height: 100%; overflow-y: hidden;">
             <embed id="pdf-embed" type="application/pdf"/>
         </div>
