@@ -3,16 +3,28 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" th:href="@{/assets/voucher/advanced-voucher.css}">
-
+    <link rel="stylesheet" th:href="@{/assets/common/upload.css}">
+    <script th:src="@{/assets/common/upload.js}"></script>
     <th:block th:replace="~{fragments/r-combobox :: r-combobox-dependencies}"></th:block>
 </head>
 
 <body>
 <main layout:fragment="content">
+    <div style="visibility:hidden; opacity:0" id="dropzone">
+        <div id="textnode" th:text="#{Drop_files_anywhere}"/>
+    </div>
+
+    <form id="upload-form"
+          th:hx-post="'/htmx/voucher/upload'"
+          th:hx-target="'#table-container'"
+          th:hx-swap="'outerHTML'"
+          th:hx-encoding="'multipart/form-data'"
+          style="display:none">
+        <input type="file" name="files" id="file-input" multiple/>
+    </form>
+
     <div>
-
         <div id="form-messages"></div>
-
         <div style="display: none;">
             <div>
                 <wa-icon name="clock" style="margin-right: var(--wa-space-s);"/>
