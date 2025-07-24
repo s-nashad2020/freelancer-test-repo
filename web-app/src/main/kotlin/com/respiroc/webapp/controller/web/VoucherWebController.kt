@@ -337,6 +337,7 @@ class VoucherAttachmentHTMXController(
 
             val updatedAttachments = voucherAttachmentService.findAttachmentsByVoucherId(voucherId)
             model.addAttribute("attachments", updatedAttachments)
+            model.addAttribute("voucherId", voucherId)
 
             return "voucher/advanced-voucher :: attachmentsTable"
         } catch (_: Exception) {
@@ -356,6 +357,7 @@ class VoucherAttachmentHTMXController(
 
             val updatedAttachments = voucherAttachmentService.findAttachmentsByVoucherId(voucherId)
             model.addAttribute("attachments", updatedAttachments)
+            model.addAttribute("voucherId", voucherId)
 
             return "voucher/advanced-voucher :: attachmentsTable"
         } catch (_: Exception) {
