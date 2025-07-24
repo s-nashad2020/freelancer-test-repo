@@ -12,7 +12,7 @@
     </div>
 
     <form id="upload-form"
-          th:hx-post="'/voucher-reception/upload'"
+          th:hx-post="'/htmx/voucher-reception/upload'"
           th:hx-target="'#table-container'"
           th:hx-swap="'outerHTML'"
           th:hx-encoding="'multipart/form-data'"

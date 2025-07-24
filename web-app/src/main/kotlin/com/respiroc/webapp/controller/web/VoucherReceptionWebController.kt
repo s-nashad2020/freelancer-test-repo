@@ -2,7 +2,6 @@ package com.respiroc.webapp.controller.web
 
 import com.respiroc.attachment.application.VoucherReceptionService
 import com.respiroc.attachment.domain.repository.VoucherReceptionDocumentRepository
-import com.respiroc.tenant.application.TenantService
 import com.respiroc.webapp.controller.BaseController
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest
 import org.springframework.http.HttpStatus
@@ -18,9 +17,7 @@ import java.util.*
 @Controller
 @RequestMapping("/voucher-reception")
 class VoucherReceptionWebController(
-    private val voucherReceptionDocumentRepository: VoucherReceptionDocumentRepository,
-    private val voucherReceptionService: VoucherReceptionService,
-    private val tenantService: TenantService
+    private val voucherReceptionDocumentRepository: VoucherReceptionDocumentRepository
 ) : BaseController() {
 
     @GetMapping(value = ["", "/"])
@@ -49,6 +46,14 @@ class VoucherReceptionWebController(
         return ResponseEntity.ok().contentType(MediaType.TEXT_HTML)
             .body("""<embed id="pdf-embed" type="application/pdf" src="$dataUrl" style="width: 100%; height: 100%; border: none;"/>""");
     }
+}
+
+@Controller
+@RequestMapping("/htmx/voucher-reception")
+class VoucherReceptionHTMXController(
+    private val voucherReceptionDocumentRepository: VoucherReceptionDocumentRepository,
+    private val voucherReceptionService: VoucherReceptionService
+) : BaseController() {
 
     @PostMapping("/upload")
     @HxRequest
