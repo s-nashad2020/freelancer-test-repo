@@ -1,6 +1,6 @@
 -- Add tenant_id column to attachments table
 ALTER TABLE attachments
-    ADD COLUMN tenant_id INTEGER NOT NULL;
+    ADD COLUMN tenant_id INTEGER NOT NULL DEFAULT 1;
 
 -- Add foreign key constraint to tenant_id
 ALTER TABLE attachments
