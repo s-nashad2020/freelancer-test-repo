@@ -37,7 +37,6 @@ class VoucherReceptionService(
         val document = VoucherReceptionDocument().apply {
             this.attachment = savedAttachment
             this.senderEmail = senderEmail
-            this.tenant = tenant
         }
         return voucherDocumentRepository.save(document)
     }

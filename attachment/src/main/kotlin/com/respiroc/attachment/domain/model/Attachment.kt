@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.TenantId
 import java.time.Instant
 
 @Entity
@@ -28,4 +29,8 @@ class Attachment {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     var createdAt: Instant? = null
+
+    @TenantId
+    @Column(name = "tenant_id", nullable = false, updatable = false)
+    var tenantId: Long? = null
 }
