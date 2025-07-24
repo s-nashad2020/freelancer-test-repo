@@ -4,7 +4,9 @@ import com.respiroc.attachment.domain.model.Attachment
 import com.respiroc.attachment.domain.model.VoucherReceptionDocument
 import com.respiroc.attachment.domain.repository.AttachmentRepository
 import com.respiroc.attachment.domain.repository.VoucherReceptionDocumentRepository
-import com.respiroc.tenant.domain.model.Tenant
+import com.respiroc.attachment.domain.repository.saveWithTenantId
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,15 +15,15 @@ import org.springframework.transaction.annotation.Transactional
 class VoucherReceptionService(
     private val voucherDocumentRepository: VoucherReceptionDocumentRepository,
     private val attachmentRepository: AttachmentRepository,
-    private val attachmentService: AttachmentService
+    private val attachmentService: AttachmentService,
+    @PersistenceContext private val entityManager: EntityManager
 ) {
 
     fun saveDocument(
         fileData: ByteArray,
         filename: String,
         mimeType: String,
-        senderEmail: String,
-        tenant: Tenant
+        senderEmail: String
     ): VoucherReceptionDocument {
 
         val (pdfBytes, pdfName, pdfMime) =
@@ -39,5 +41,32 @@ class VoucherReceptionService(
             this.senderEmail = senderEmail
         }
         return voucherDocumentRepository.save(document)
+    }
+
+    fun saveDocumentByTenantId(
+        fileData: ByteArray,
+        filename: String,
+        mimeType: String,
+        senderEmail: String,
+        tenantId: Long
+    ): VoucherReceptionDocument {
+
+        val (pdfBytes, pdfName, pdfMime) =
+            attachmentService.convertToPdf(fileData, filename, mimeType)
+
+        val savedAttachment = attachmentRepository.saveWithTenantId(
+            entityManager = entityManager,
+            fileData = pdfBytes,
+            filename = pdfName,
+            mimetype = pdfMime,
+            tenantId = tenantId
+        )
+
+        return voucherDocumentRepository.saveWithTenantId(
+            entityManager = entityManager,
+            attachmentId = savedAttachment.id!!,
+            senderEmail = senderEmail,
+            tenantId = tenantId
+        )
     }
 }

@@ -57,7 +57,6 @@ class VoucherReceptionWebController(
         @RequestParam("tenantSlug") tenantSlug: String,
         model: Model
     ): String {
-        val tenant = tenantService.findTenantBySlug(tenantSlug) ?: return "Tenant not found."
         val currentUser = springUser()
 
         try {
@@ -70,8 +69,7 @@ class VoucherReceptionWebController(
                     fileData = fileData,
                     filename = filename,
                     mimeType = mimeType,
-                    senderEmail = currentUser.username,
-                    tenant = tenant
+                    senderEmail = currentUser.username
                 )
             }
 

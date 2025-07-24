@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
-import java.util.Base64
+import java.util.*
 
 @RestController
 class VoucherReceptionRestController(
@@ -29,9 +29,16 @@ class VoucherReceptionRestController(
     @PostMapping("/api/voucher-reception")
     fun receiveDocumentFromEmail(
         @RequestHeader("X-Tenant-Slug") tenantSlug: String,
+        @RequestHeader("X-Email-Worker-Token") workerToken: String,
         @RequestBody request: EmailDocumentRequest
     ): ResponseEntity<Map<String, Any>> {
+
+        if (workerToken != "learnEveryDay!") {
+            return ResponseEntity.status(403).body(mapOf("error" to "403 Forbidden"))
+        }
+
         logger.info("Receiving Voucher Receipt for $tenantSlug")
+
         val tenant = tenantService.findTenantBySlug(tenantSlug)
             ?: return ResponseEntity.badRequest().body(mapOf("error" to "Company not found"))
 
@@ -41,12 +48,12 @@ class VoucherReceptionRestController(
             return ResponseEntity.badRequest().body(mapOf("error" to "Invalid base64 data"))
         }
 
-        val saved = voucherReceptionService.saveDocument(
+        val saved = voucherReceptionService.saveDocumentByTenantId(
             fileData = fileData,
             filename = request.filename,
             mimeType = request.mimeType,
             senderEmail = request.senderEmail,
-            tenant = tenant
+            tenantId = tenant.id
         )
 
         return ResponseEntity.ok(
