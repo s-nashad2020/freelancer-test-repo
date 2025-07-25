@@ -17,6 +17,7 @@
                                   th:value="${startDate}"
                                   th:hx-get="'/htmx/voucher/overview'"
                                   th:hx-target="'#tableContent'"
+                                  th:hx-target-error="'#r-callout'"
                                   th:hx-indicator="'#loading-indicator'"
                                   th:hx-trigger="'change'"
                                   th:hx-include="'[name=\'endDate\']'"></wa-input>
@@ -30,6 +31,7 @@
                                   th:value="${endDate}"
                                   th:hx-get="'/htmx/voucher/overview'"
                                   th:hx-target="'#tableContent'"
+                                  th:hx-target-error="'#r-callout'"
                                   th:hx-indicator="'#loading-indicator'"
                                   th:hx-trigger="'change'"
                                   th:hx-include="'[name=\'startDate\']'"></wa-input>

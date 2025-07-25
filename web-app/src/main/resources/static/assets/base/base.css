@@ -36,7 +36,9 @@ wa-page > [slot='header'] {
 }
 
 main {
-    padding: var(--wa-space-l);
+    padding-left: var(--wa-space-l);
+    padding-right: var(--wa-space-l);
+    padding-bottom: var(--wa-space-l);
     min-height: 100vh;
 }
 

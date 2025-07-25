@@ -5,6 +5,7 @@ import com.respiroc.attachment.domain.repository.VoucherAttachmentRepository
 import com.respiroc.ledger.application.VatService
 import com.respiroc.ledger.application.VoucherService
 import com.respiroc.util.currency.CurrencyService
+import com.respiroc.util.exception.ResourceNotFoundException
 import com.respiroc.webapp.constant.ShortcutRegistry
 import com.respiroc.webapp.constant.ShortcutScreen
 import com.respiroc.webapp.controller.BaseController
@@ -73,7 +74,7 @@ class VoucherWebController(
     @GetMapping(value = ["/{id}"])
     fun editVoucher(@PathVariable id: Long, model: Model): String {
         val voucher = voucherApi.findVoucherById(id)
-            ?: throw IllegalArgumentException("Voucher not found")
+            ?: throw ResourceNotFoundException("Voucher not found")
 
         val uiPostingLines = if (voucher.postings.isNotEmpty()) {
             voucherWebService.convertPostingsToUILines(voucher.postings.toList())
@@ -129,22 +130,17 @@ class VoucherHTMXController(
         endDate: LocalDate?,
         model: Model
     ): String {
-        return try {
-            val effectiveStartDate = startDate ?: LocalDate.now().withDayOfMonth(1)
-            val effectiveEndDate = endDate ?: LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
+        val effectiveStartDate = startDate ?: LocalDate.now().withDayOfMonth(1)
+        val effectiveEndDate = endDate ?: LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
 
-            val vouchers = voucherApi.findVoucherSummariesByDateRange(effectiveStartDate, effectiveEndDate)
+        val vouchers = voucherApi.findVoucherSummariesByDateRange(effectiveStartDate, effectiveEndDate)
 
-            model.addAttribute("vouchers", vouchers)
-            model.addAttribute("startDate", effectiveStartDate)
-            model.addAttribute("endDate", effectiveEndDate)
-            model.addAttribute(userAttributeName, springUser())
+        model.addAttribute("vouchers", vouchers)
+        model.addAttribute("startDate", effectiveStartDate)
+        model.addAttribute("endDate", effectiveEndDate)
+        model.addAttribute(userAttributeName, springUser())
 
-            "voucher/overview :: tableContent"
-        } catch (e: Exception) {
-            model.addAttribute(calloutAttributeName, Callout.Error("Error loading vouchers: ${e.message}"))
-            "voucher/overview :: error-message"
-        }
+        return "voucher/overview :: tableContent"
     }
 
     @PostMapping("/update/{voucherId}")
@@ -158,21 +154,16 @@ class VoucherHTMXController(
         if (bindingResult.hasErrors()) {
             val errorMessages = bindingResult.allErrors.joinToString(", ") { it.defaultMessage ?: "Validation error" }
             model.addAttribute(calloutAttributeName, Callout.Error(errorMessages))
-            return "fragments/callout-message"
+            return "fragments/r-callout"
         }
 
-        try {
-            voucherWebService.updateVoucherWithPostings(
-                voucherId,
-                createVoucherRequest,
-                countryCode()
-            )
+        voucherWebService.updateVoucherWithPostings(
+            voucherId,
+            createVoucherRequest,
+            countryCode()
+        )
 
-            return "fragments/empty"
-        } catch (e: Exception) {
-            model.addAttribute(calloutAttributeName, Callout.Error("Failed to update voucher: ${e.message}"))
-            return "fragments/callout-message"
-        }
+        return "fragments/empty"
     }
 
     @GetMapping("/add-posting-line")
@@ -321,28 +312,24 @@ class VoucherAttachmentHTMXController(
         @RequestParam("voucherId") voucherId: Long,
         model: Model
     ): String {
-        try {
-            files.forEach { file ->
-                val fileData = file.bytes
-                val filename = file.originalFilename ?: "unnamed"
-                val mimeType = file.contentType ?: "application/octet-stream"
+        files.forEach { file ->
+            val fileData = file.bytes
+            val filename = file.originalFilename ?: "unnamed"
+            val mimeType = file.contentType ?: "application/octet-stream"
 
-                voucherAttachmentService.saveAttachment(
-                    voucherId = voucherId,
-                    fileData = fileData,
-                    filename = filename,
-                    mimeType = mimeType
-                )
-            }
-
-            val updatedAttachments = voucherAttachmentService.findAttachmentsByVoucherId(voucherId)
-            model.addAttribute("attachments", updatedAttachments)
-            model.addAttribute("voucherId", voucherId)
-
-            return "voucher/advanced-voucher :: attachmentsTable"
-        } catch (_: Exception) {
-            return "Error saving files"
+            voucherAttachmentService.saveAttachment(
+                voucherId = voucherId,
+                fileData = fileData,
+                filename = filename,
+                mimeType = mimeType
+            )
         }
+
+        val updatedAttachments = voucherAttachmentService.findAttachmentsByVoucherId(voucherId)
+        model.addAttribute("attachments", updatedAttachments)
+        model.addAttribute("voucherId", voucherId)
+
+        return "voucher/advanced-voucher :: attachmentsTable"
     }
 
     @DeleteMapping("/{id}")
@@ -352,16 +339,12 @@ class VoucherAttachmentHTMXController(
         @RequestParam("voucherId") voucherId: Long,
         model: Model
     ): String {
-        try {
-            voucherAttachmentService.deleteAttachment(id)
+        voucherAttachmentService.deleteAttachment(id)
 
-            val updatedAttachments = voucherAttachmentService.findAttachmentsByVoucherId(voucherId)
-            model.addAttribute("attachments", updatedAttachments)
-            model.addAttribute("voucherId", voucherId)
+        val updatedAttachments = voucherAttachmentService.findAttachmentsByVoucherId(voucherId)
+        model.addAttribute("attachments", updatedAttachments)
+        model.addAttribute("voucherId", voucherId)
 
-            return "voucher/advanced-voucher :: attachmentsTable"
-        } catch (_: Exception) {
-            return "Error deleting attachment"
-        }
+        return "voucher/advanced-voucher :: attachmentsTable"
     }
 }
