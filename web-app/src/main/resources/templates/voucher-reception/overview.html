@@ -15,6 +15,7 @@
     <form id="upload-form"
           th:hx-post="'/htmx/voucher-reception/upload'"
           th:hx-target="'#table-container'"
+          th:hx-target-error="'#r-callout'"
           th:hx-swap="'outerHTML'"
           th:hx-encoding="'multipart/form-data'"
           style="display:none">
@@ -56,8 +57,9 @@
                     <tr th:each="document : ${documents}"
                         th:onclick="activateSplit()"
                         th:hx-get="@{/voucher-reception/document/{id}/pdf(id=${document.id})}"
-                        th:hx-target="'#pdf-embed'"
-                        th:hx-swap="'outerHTML'"
+                        th:hx-target="'#pdf-container'"
+                        th:hx-target-error="'#r-callout'"
+                        th:hx-swap="'innerHTML'"
                         th:hx-trigger="'click delay:200ms'"
                         style="cursor: pointer;">
                         <td th:text="${document.attachment.filename}"></td>

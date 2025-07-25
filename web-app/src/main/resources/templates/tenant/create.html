@@ -14,6 +14,7 @@
                       th:object="${createCompanyRequest}"
                       th:hx-post="'/htmx/tenant/create'"
                       th:hx-target="'#r-callout'"
+                      th:hx-target-error="'#r-callout'"
                       th:hx-swap="'innerHTML'"
                       th:hx-indicator="'#loading-indicator'">
                     <div class="wa-stack">
@@ -31,6 +32,7 @@
                                     th:hx-indicator="'#loading-indicator'"
                                     th:hx-trigger="'input changed delay:200ms'"
                                     th:hx-target="'#name-dropdown'"
+                                    th:hx-target-error="'#r-callout'"
                                     th:hx-swap="'outerHTML'"
                                     slot="trigger"
                                     hx-include="[name='countryCode']">

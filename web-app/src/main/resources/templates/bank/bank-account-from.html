@@ -13,9 +13,9 @@
                   th:hx-post="@{/htmx/bank/account}"
                   th:hx-indicator="'#loading-indicator'"
                   th:hx-disabled-elt="'#submitButton'"
-                  th:hx-target="'#r-callout'"
+                  th:hx-target-error="'#r-callout'"
                   style="--min-column-size: 500px;"
-                  th:hx-swap="outerHTML">
+                  th:hx-swap="'innerHTML'">
                 <div class="wa-grid">
                     <wa-select
                             id="countryCode"

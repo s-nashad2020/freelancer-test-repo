@@ -15,7 +15,7 @@
         <script src="http://localhost:35729/livereload.js"></script>
     </th:block>
 </head>
-<body class="wa-cloak">
+<body hx-ext="response-targets" class="wa-cloak">
 
 <wa-page mobile-breakpoint="920" th:if="${user != null}">
     <header slot="header" class="wa-split">
@@ -30,6 +30,7 @@
                         th:each="tenant : ${tenants}"
                         th:hx-post="@{/htmx/auth/select-tenant(tenantId=${tenant.id})}"
                         th:hx-target="'body'"
+                        th:hx-target-error="'#r-callout'"
                         th:hx-swap="'innerHTML'"
                         th:hx-indicator="'#loading-indicator'"
                         th:disabled="${currentTenant?.id == tenant.id}">
@@ -76,7 +77,9 @@
     <wa-split-panel disabled class="r-split-panel-disabled r-split-panel" id="main-split-panel" position="100"
                     primary="start">
         <div slot="start">
-            <div id="r-callout" style="padding-left: var(--wa-space-l); padding-right: var(--wa-space-l); padding-top: var(--wa-space-l);"></div>
+            <div style="padding-left: var(--wa-space-l); padding-right: var(--wa-space-l); padding-top: var(--wa-space-l);">
+                <div id="r-callout"></div>
+            </div>
             <main layout:fragment="content" id="main-content">
                 <!-- Page content will be inserted here -->
             </main>

@@ -8,13 +8,13 @@
     <th:block th:replace="~{layout/libs :: common-libs}"></th:block>
 </head>
 
-<body>
+<body hx-ext="response-targets">
 <div class="wa-stack wa-align-items-center" style="justify-content: center; height: 100vh">
     <div style="width: 340px">
         <wa-card style="width: 100%">
             <div id="r-callout"></div>
             <form th:hx-post="@{/htmx/auth/signup}"
-                  th:hx-target="'#r-callout'"
+                  th:hx-target-error="'#r-callout'"
                   th:hx-swap="'innerHTML'">
                 <div class="wa-stack">
                     <h2 class="wa-heading-m" th:text="#{signup}"/>
