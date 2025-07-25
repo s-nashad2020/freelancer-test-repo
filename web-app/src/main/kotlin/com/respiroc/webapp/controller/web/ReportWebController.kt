@@ -151,8 +151,9 @@ class ReportHTMXController(
         return "report/profit-loss :: tableContent"
     }
 
-    @GetMapping(value = ["/balance-sheet"], headers = ["HX-Request"])
-    fun balanceSheetHtmx(
+    @GetMapping(value = ["/balance-sheet"])
+    @HxRequest
+    fun balanceSheetHTMX(
         @RequestParam(name = "startDate", required = false)
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         startDate: LocalDate?,
