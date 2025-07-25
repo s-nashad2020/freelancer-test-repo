@@ -35,6 +35,7 @@
 
         <form th:hx-indicator="'#loading-indicator'"
               th:hx-disabled-elt="'#saveButton'"
+              th:hx-target="'#r-callout'"
               th:hx-target-error="'#r-callout'"
               th:hx-post="@{/htmx/voucher/update/{voucherId}(voucherId=${voucherId}, tenantId=${user.ctx.currentTenant?.id})}"
               id="voucherForm"
