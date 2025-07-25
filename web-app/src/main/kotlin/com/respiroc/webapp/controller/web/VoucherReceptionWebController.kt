@@ -63,26 +63,22 @@ class VoucherReceptionHTMXController(
     ): String {
         val currentUser = springUser()
 
-        try {
-            files.forEach { file ->
-                val fileData = file.bytes
-                val filename = file.originalFilename ?: "unnamed"
-                val mimeType = file.contentType ?: "application/octet-stream"
+        files.forEach { file ->
+            val fileData = file.bytes
+            val filename = file.originalFilename ?: "unnamed"
+            val mimeType = file.contentType ?: "application/octet-stream"
 
-                voucherReceptionService.saveDocument(
-                    fileData = fileData,
-                    filename = filename,
-                    mimeType = mimeType,
-                    senderEmail = currentUser.username
-                )
-            }
-
-            val updatedDocuments = voucherReceptionDocumentRepository.findAll()
-            model.addAttribute("documents", updatedDocuments)
-
-            return "voucher-reception/overview :: tableContainer"
-        } catch (_: Exception) {
-            return "Error saving files"
+            voucherReceptionService.saveDocument(
+                fileData = fileData,
+                filename = filename,
+                mimeType = mimeType,
+                senderEmail = currentUser.username
+            )
         }
+
+        val updatedDocuments = voucherReceptionDocumentRepository.findAll()
+        model.addAttribute("documents", updatedDocuments)
+
+        return "voucher-reception/overview :: tableContainer"
     }
 }

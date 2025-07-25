@@ -128,3 +128,8 @@ function disableSplit() {
         }
     }
 }
+
+document.body.addEventListener('htmx:responseError', function(event) {
+    event.preventDefault();
+    document.querySelector('#r-callout').innerHTML = event.detail.xhr.responseText;
+});

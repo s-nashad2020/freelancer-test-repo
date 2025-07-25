@@ -25,7 +25,6 @@
     </form>
 
     <div>
-        <div id="form-messages"></div>
         <div style="display: none;">
             <div>
                 <wa-icon name="clock" style="margin-right: var(--wa-space-s);"/>
@@ -35,7 +34,7 @@
 
         <form th:hx-indicator="'#loading-indicator'"
               th:hx-disabled-elt="'#saveButton'"
-              th:hx-target="'#form-messages'"
+              th:hx-target="'#r-callout'"
               th:hx-post="@{/htmx/voucher/update/{voucherId}(voucherId=${voucherId}, tenantId=${user.ctx.currentTenant?.id})}"
               id="voucherForm"
               th:hx-swap="'innerHTML'"
