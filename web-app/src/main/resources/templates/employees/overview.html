@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  dir="ltr"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/base}"
+>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/assets/employees/employee-table.css}" />
+  </head>
+  <body>
+    <main layout:fragment="content">
+      <div class="controls-container">
+        <div class="search-container">
+          <wa-input
+            placeholder="Search employees"
+            size="small"
+            name="search"
+            type="text"
+            id="search-input"
+          >
+            <wa-icon name="search" slot="start"></wa-icon>
+          </wa-input>
+        </div>
+        <div class="actions-container">
+          <wa-button
+            size="small"
+            variant="neutral"
+            th:href="@{/employees/export}"
+            title="Export employees"
+          >
+            <wa-icon name="download"></wa-icon>
+          </wa-button>
+          <wa-button
+            size="small"
+            th:href="@{/employees/create}"
+            variant="neutral"
+          >
+            <wa-icon name="plus" slot="prefix"></wa-icon>
+            New Employee
+          </wa-button>
+        </div>
+      </div>
+        <wa-progress-bar
+          id="loading-indicator"
+          indeterminate
+          class="htmx-indicator"
+          style="margin-bottom: var(--wa-space-xs)"
+        ></wa-progress-bar>
+        <div
+          th:replace="~{fragments/employee-table :: table(employees=${employees})}"
+        ></div>
+      </div>
+    </main>
+    <th:block layout:fragment="scripts">
+      <script th:src="@{/assets/employees/employee.js}"></script>
+    </th:block>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<table class="r-custom-table" id="employee-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Employee Number</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th class="r-text-right">Actions</th>
+    </tr>
+  </thead>
+  <tbody id="employee-table-body">
+    <tr th:if="${employees == null || employees.isEmpty()}">
+      <td colspan="6" class="r-no-data">No employees found</td>
+    </tr>
+    <tr th:each="employee : ${employees}" th:id="'row-' + ${employee.id}">
+      <td th:data-label="'Name'" th:text="${employee.name}"></td>
+      <td
+        th:data-label="'Employee Number'"
+        th:text="${employee.employeeNumber != null ? employee.employeeNumber : '-'}"
+      ></td>
+      <td
+        th:data-label="'Email'"
+        th:text="${employee.email != null ? employee.email : '-'}"
+      ></td>
+      <td
+        th:data-label="'Phone'"
+        th:text="${employee.personalPhone != null ? employee.personalPhone : '-'}"
+      ></td>
+      <td
+        th:data-label="'Address'"
+        th:text="${employee.address != null ? employee.address.addressPart1 + ', ' + employee.address.city : '-'}"
+      ></td>
+      <td th:data-label="'Actions'" class="r-text-right">
+        <wa-button
+          size="small"
+          variant="neutral"
+          th:href="@{/employees/{id}/edit(id=${employee.id})}"
+        >
+          <wa-icon name="edit"></wa-icon>
+        </wa-button>
+        <wa-button
+          size="small"
+          variant="danger"
+          th:hx-target="'#row-' + ${employee.id}"
+          th:hx-target-error="'#r-callout'"
+          th:hx-delete="@{/api/employees/{id}(id=${employee.id})}"
+          th:hx-indicator="'#loading-indicator-' + ${employee.id}"
+          hx-disabled-elt="this"
+          hx-swap="innerHTML swap:0.5s"
+          th:hx-confirm="'Are you sure you want to delete ' + ${employee.name} + '?'"
+        >
+          <wa-icon name="trash"></wa-icon>
+        </wa-button>
+      </td>
+    </tr>
+  </tbody>
+</table>

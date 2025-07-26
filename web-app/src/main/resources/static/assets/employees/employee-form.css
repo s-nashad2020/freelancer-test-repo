@@ -1,0 +1,177 @@
+/* Employee Form Styles - Consistent with application theme */
+.wa-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--wa-space-m);
+}
+
+.wa-form-section {
+  background: var(--wa-color-surface);
+  border-radius: var(--wa-border-radius-m);
+  padding: var(--wa-space-l);
+  margin-bottom: var(--wa-space-l);
+  box-shadow: var(--wa-shadow-s);
+}
+
+.wa-form-section h3 {
+  color: var(--wa-color-on-surface);
+  font-size: var(--wa-font-size-l);
+  font-weight: 600;
+  margin-bottom: var(--wa-space-m);
+  padding-bottom: var(--wa-space-s);
+  border-bottom: 1px solid var(--wa-color-outline-variant);
+}
+
+.wa-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--wa-space-m);
+}
+
+.wa-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wa-space-xs);
+}
+
+.wa-form-field label {
+  color: var(--wa-color-on-surface-variant);
+  font-weight: 500;
+  font-size: var(--wa-font-size-s);
+}
+
+.wa-form-field input,
+.wa-form-field select,
+.wa-form-field textarea {
+  padding: var(--wa-space-s);
+  border: 1px solid var(--wa-color-outline);
+  border-radius: var(--wa-border-radius-s);
+  background: var(--wa-color-surface);
+  color: var(--wa-color-on-surface);
+  font-size: var(--wa-font-size-s);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wa-form-field input:focus,
+.wa-form-field select:focus,
+.wa-form-field textarea:focus {
+  outline: none;
+  border-color: var(--wa-color-primary);
+  box-shadow: 0 0 0 2px var(--wa-color-primary-container);
+}
+
+.wa-form-field input:invalid,
+.wa-form-field select:invalid,
+.wa-form-field textarea:invalid {
+  border-color: var(--wa-color-error);
+}
+
+.wa-form-field .error-message {
+  color: var(--wa-color-error);
+  font-size: var(--wa-font-size-xs);
+  margin-top: var(--wa-space-xs);
+}
+
+.wa-form-field .help-text {
+  color: var(--wa-color-on-surface-variant);
+  font-size: var(--wa-font-size-xs);
+  margin-top: var(--wa-space-xs);
+}
+
+/* Full width fields */
+.wa-form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Required field indicator */
+.wa-form-field.required label::after {
+  content: " *";
+  color: var(--wa-color-error);
+}
+
+/* Form Actions */
+.wa-form-actions {
+  display: flex;
+  gap: var(--wa-space-s);
+  justify-content: flex-end;
+  padding-top: var(--wa-space-l);
+  border-top: 1px solid var(--wa-color-outline-variant);
+  margin-top: var(--wa-space-l);
+}
+
+.wa-form-actions .wa-button {
+  min-width: 100px;
+}
+
+/* Error Display */
+.error-alert {
+  background: var(--wa-color-error-container);
+  color: var(--wa-color-on-error-container);
+  padding: var(--wa-space-m);
+  border-radius: var(--wa-border-radius-s);
+  margin-bottom: var(--wa-space-m);
+  border: 1px solid var(--wa-color-error);
+}
+
+/* Success Display */
+.success-alert {
+  background: var(--wa-color-primary-container);
+  color: var(--wa-color-on-primary-container);
+  padding: var(--wa-space-m);
+  border-radius: var(--wa-border-radius-s);
+  margin-bottom: var(--wa-space-m);
+  border: 1px solid var(--wa-color-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .wa-form {
+    padding: var(--wa-space-s);
+  }
+
+  .wa-form-section {
+    padding: var(--wa-space-m);
+  }
+
+  .wa-form-grid {
+    grid-template-columns: 1fr;
+    gap: var(--wa-space-s);
+  }
+
+  .wa-form-actions {
+    flex-direction: column;
+  }
+
+  .wa-form-actions .wa-button {
+    width: 100%;
+  }
+}
+
+/* Loading State */
+.wa-form.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.wa-form.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--wa-color-primary);
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
