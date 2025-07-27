@@ -2,8 +2,6 @@ package com.respiroc.webapp.controller.web
 
 import com.respiroc.employees.application.EmployeeService
 import com.respiroc.webapp.controller.BaseController
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,21 +16,15 @@ class EmployeeHtmxController(
 
     @GetMapping("/search")
     fun searchEmployees(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "20") size: Int,
-        @RequestParam(defaultValue = "name") sortBy: String,
-        @RequestParam(defaultValue = "asc") sortDir: String,
         @RequestParam(required = false) search: String?,
         model: Model
     ): String {
         val tenantId = tenantId()
-        val sort = Sort.by(if (sortDir == "desc") Sort.Direction.DESC else Sort.Direction.ASC, sortBy)
-        val pageable = PageRequest.of(page, size, sort)
 
         val employees = if (search.isNullOrBlank()) {
-            employeeService.getEmployees(tenantId, pageable)
+            employeeService.getEmployees(tenantId)
         } else {
-            employeeService.searchEmployees(tenantId, search, pageable)
+            employeeService.searchEmployees(tenantId, search)
         }
 
         model.addAttribute("employees", employees)

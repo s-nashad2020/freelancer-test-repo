@@ -7,7 +7,6 @@
 >
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" th:href="@{/assets/employees/employee-form.css}" />
   </head>
   <body>
     <main layout:fragment="content">
@@ -29,124 +28,152 @@
           <span th:text="${error}"></span>
         </div>
 
-        <form
-          id="employee-form"
-          method="post"
-          th:action="${employee != null ? '/employees/' + employee.id : '/employees'}"
-        >
-          <div class="wa-form">
-            <div class="wa-form-section">
-              <h2>Basic Information</h2>
-              <div class="wa-form-grid">
-                <div class="wa-form-field">
-                  <label for="name">Name *</label>
+        <wa-card style="margin-bottom: var(--wa-space-m)">
+          <div style="padding: var(--wa-space-xl)">
+            <form
+              id="employee-form"
+              method="post"
+              th:action="${employee != null ? '/employees/' + employee.id : '/employees'}"
+              class="wa-grid"
+              style="--min-column-size: 1000px"
+            >
+              <!-- Basic Information Section -->
+              <div>
+                <h3
+                  style="
+                    margin-bottom: var(--wa-space-m);
+                    padding-bottom: var(--wa-space-s);
+                    border-bottom: 1px solid var(--wa-color-outline-variant);
+                  "
+                >
+                  Basic Information
+                </h3>
+                <div class="wa-grid" style="--min-column-size: 350px">
                   <wa-input
                     id="name"
                     name="name"
                     type="text"
                     required
                     th:value="${employee?.name}"
+                    label="Name *"
+                    placeholder="Enter employee name"
                   ></wa-input>
-                </div>
-                <div class="wa-form-field">
-                  <label for="employeeNumber">Employee Number</label>
+
                   <wa-input
                     id="employeeNumber"
                     name="employeeNumber"
                     type="text"
                     th:value="${employee?.employeeNumber}"
+                    label="Employee Number"
+                    placeholder="Enter employee number"
                   ></wa-input>
-                </div>
-                <div class="wa-form-field">
-                  <label for="email">Email Address</label>
+
                   <wa-input
                     id="email"
                     name="email"
                     type="email"
+                    required
                     th:value="${employee?.email}"
+                    label="Email Address *"
+                    placeholder="Enter email address"
                   ></wa-input>
-                </div>
-                <div class="wa-form-field">
-                  <label for="dateOfBirth">Date of Birth</label>
+
                   <wa-input
                     id="dateOfBirth"
                     name="dateOfBirth"
                     type="date"
                     th:value="${employee?.dateOfBirth}"
+                    label="Date of Birth"
+                    placeholder=""
                   ></wa-input>
                 </div>
               </div>
-            </div>
 
-            <div class="wa-form-section">
-              <h2>Contact Information</h2>
-              <div class="wa-form-grid">
-                <div class="wa-form-field">
-                  <label for="personalPhone">Personal Phone</label>
+              <!-- Contact Information Section -->
+              <div>
+                <h3
+                  style="
+                    margin-bottom: var(--wa-space-m);
+                    padding-bottom: var(--wa-space-s);
+                    border-bottom: 1px solid var(--wa-color-outline-variant);
+                  "
+                >
+                  Contact Information
+                </h3>
+                <div class="wa-grid" style="--min-column-size: 350px">
                   <wa-input
                     id="personalPhone"
                     name="personalPhone"
                     type="tel"
                     th:value="${employee?.personalPhone}"
+                    label="Personal Phone"
+                    placeholder="Enter personal phone number"
                   ></wa-input>
-                </div>
-                <div class="wa-form-field">
-                  <label for="workPhone">Work Phone</label>
+
                   <wa-input
                     id="workPhone"
                     name="workPhone"
                     type="tel"
                     th:value="${employee?.workPhone}"
+                    label="Work Phone"
+                    placeholder="Enter work phone number"
                   ></wa-input>
                 </div>
               </div>
-            </div>
 
-            <div class="wa-form-section">
-              <h2>Address</h2>
-              <div class="wa-form-grid">
-                <div class="wa-form-field">
-                  <label for="addressPart1">Address Line 1</label>
+              <!-- Address Information Section -->
+              <div>
+                <h3
+                  style="
+                    margin-bottom: var(--wa-space-m);
+                    padding-bottom: var(--wa-space-s);
+                    border-bottom: 1px solid var(--wa-color-outline-variant);
+                  "
+                >
+                  Address Information
+                </h3>
+                <div class="wa-grid" style="--min-column-size: 350px">
                   <wa-input
                     id="addressPart1"
                     name="addressPart1"
                     type="text"
                     th:value="${employee?.address?.addressPart1}"
+                    label="Address Field 1"
+                    placeholder="Enter street address"
                   ></wa-input>
-                </div>
-                <div class="wa-form-field">
-                  <label for="addressPart2">Address Line 2</label>
+
                   <wa-input
                     id="addressPart2"
                     name="addressPart2"
                     type="text"
                     th:value="${employee?.address?.addressPart2}"
+                    label="Address Field 2"
+                    placeholder="Enter additional address info"
                   ></wa-input>
-                </div>
-                <div class="wa-form-field">
-                  <label for="city">City</label>
+
                   <wa-input
                     id="city"
                     name="city"
                     type="text"
                     th:value="${employee?.address?.city}"
+                    label="City"
+                    placeholder="Enter city"
                   ></wa-input>
-                </div>
-                <div class="wa-form-field">
-                  <label for="postalCode">Postal Code</label>
+
                   <wa-input
                     id="postalCode"
                     name="postalCode"
                     type="text"
                     th:value="${employee?.address?.postalCode}"
+                    label="Postal Code"
+                    placeholder="Enter postal code"
                   ></wa-input>
-                </div>
-                <div class="wa-form-field">
-                  <label for="addressCountryCode">Country</label>
+
                   <wa-select
                     id="addressCountryCode"
                     name="addressCountryCode"
                     th:value="${employee?.address?.countryIsoCode}"
+                    label="Country"
                   >
                     <wa-option value="NO">Norway</wa-option>
                     <wa-option value="SE">Sweden</wa-option>
@@ -157,40 +184,48 @@
                     <wa-option value="DE">Germany</wa-option>
                     <wa-option value="FR">France</wa-option>
                   </wa-select>
-                </div>
-                <div class="wa-form-field">
-                  <label for="administrativeDivisionCode">State/Province</label>
+
                   <wa-input
                     id="administrativeDivisionCode"
                     name="administrativeDivisionCode"
                     type="text"
                     th:value="${employee?.address?.administrativeDivisionCode}"
+                    label="State/Province"
+                    placeholder="Enter state or province"
                   ></wa-input>
                 </div>
               </div>
-            </div>
 
-            <div class="wa-form-actions">
-              <wa-button
-                size="medium"
-                variant="neutral"
-                th:href="@{/employees}"
+              <!-- Form Actions -->
+              <div
+                style="
+                  grid-column: 1 / -1;
+                  display: flex;
+                  gap: var(--wa-space-s);
+                  justify-content: flex-end;
+                  padding-top: var(--wa-space-l);
+                  border-top: 1px solid var(--wa-color-outline-variant);
+                  margin-top: var(--wa-space-l);
+                "
               >
-                Cancel
-              </wa-button>
-              <wa-button size="medium" variant="brand" type="submit">
-                <span
-                  th:text="${employee != null ? 'Update Employee' : 'Create Employee'}"
-                  >Create Employee</span
+                <wa-button
+                  size="medium"
+                  variant="neutral"
+                  th:href="@{/employees}"
                 >
-              </wa-button>
-            </div>
+                  Cancel
+                </wa-button>
+                <wa-button size="medium" variant="brand" type="submit">
+                  <span
+                    th:text="${employee != null ? 'Update Employee' : 'Create Employee'}"
+                    >Create Employee</span
+                  >
+                </wa-button>
+              </div>
+            </form>
           </div>
-        </form>
+        </wa-card>
       </div>
     </main>
-    <th:block layout:fragment="scripts">
-      <script th:src="@{/assets/employees/employee-form.js}"></script>
-    </th:block>
   </body>
 </html>

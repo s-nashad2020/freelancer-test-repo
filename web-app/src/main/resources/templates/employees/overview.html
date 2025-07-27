@@ -11,27 +11,22 @@
   </head>
   <body>
     <main layout:fragment="content">
-      <div class="controls-container">
-        <div class="search-container">
+      <div>
+        <div class="wa-split wa-gap-s">
           <wa-input
             placeholder="Search employees"
             size="small"
             name="search"
             type="text"
             id="search-input"
+            th:hx-get="@{/htmx/employees/search}"
+            th:hx-trigger="'input changed delay:500ms, keyup[key==\'Enter\']'"
+            th:hx-target="'#employee-table'"
+            th:hx-indicator="'.htmx-indicator'"
+            th:hx-swap="'innerHTML'"
           >
             <wa-icon name="search" slot="start"></wa-icon>
           </wa-input>
-        </div>
-        <div class="actions-container">
-          <wa-button
-            size="small"
-            variant="neutral"
-            th:href="@{/employees/export}"
-            title="Export employees"
-          >
-            <wa-icon name="download"></wa-icon>
-          </wa-button>
           <wa-button
             size="small"
             th:href="@{/employees/create}"
@@ -41,20 +36,20 @@
             New Employee
           </wa-button>
         </div>
-      </div>
-        <wa-progress-bar
-          id="loading-indicator"
-          indeterminate
-          class="htmx-indicator"
-          style="margin-bottom: var(--wa-space-xs)"
-        ></wa-progress-bar>
+
+        <span class="htmx-indicator" style="display: none">
+          <wa-progress-bar
+            indeterminate
+            style="margin-bottom: var(--wa-space-xs)"
+          ></wa-progress-bar>
+          Searching...
+        </span>
+
         <div
+          id="employee-table"
           th:replace="~{fragments/employee-table :: table(employees=${employees})}"
         ></div>
       </div>
     </main>
-    <th:block layout:fragment="scripts">
-      <script th:src="@{/assets/employees/employee.js}"></script>
-    </th:block>
   </body>
 </html>
